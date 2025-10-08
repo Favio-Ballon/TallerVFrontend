@@ -46,4 +46,3 @@ export const authGuard: CanActivateFn = (route, state) => {
   }
 };
 
-// Para usar este guard, agrégalo en la ruta 'protected' en app.routes.ts
