@@ -15,9 +15,9 @@ export class AuthService {
 
   login(email: string, password: string): Observable<any> {
     // Cambia la URL por tu endpoint real
-    return this.http.post<any>('/api/auth/login', { email, password }).pipe(
+    return this.http.post<any>('http://localhost:8080/auth/login', { email, password }).pipe(
       tap((res) => {
-        this.setTokens(res.accessToken, res.refreshToken);
+        this.setTokens(res.token, res.refreshToken);
         this.isAuthenticated.set(true);
       })
     );
@@ -25,12 +25,12 @@ export class AuthService {
 
   refreshToken(): Observable<any> {
     return this.http
-      .post<any>('/api/auth/refresh', {
+      .post<any>('http://localhost:8080/auth/refresh', {
         refreshToken: this.getRefreshToken(),
       })
       .pipe(
         tap((res) => {
-          this.setTokens(res.accessToken, res.refreshToken);
+          this.setTokens(res.token, res.refreshToken);
         })
       );
   }
