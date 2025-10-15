@@ -14,7 +14,6 @@ export class AuthService {
   }
 
   login(email: string, password: string): Observable<any> {
-    // Cambia la URL por tu endpoint real
     return this.http.post<any>('http://localhost:8080/auth/login', { email, password }).pipe(
       tap((res) => {
         this.setTokens(res.token, res.refreshToken);

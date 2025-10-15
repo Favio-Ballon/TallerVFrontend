@@ -24,7 +24,6 @@ export const authGuard: CanActivateFn = (route, state) => {
   if (accessToken && !isTokenExpired(accessToken)) {
     return true;
   } else if (refreshToken) {
-    // Intentar refrescar el token
     return auth.refreshToken().pipe(
       switchMap(() => {
         const newAccessToken = auth.getAccessToken();
@@ -46,4 +45,3 @@ export const authGuard: CanActivateFn = (route, state) => {
   }
 };
 
-// Para usar este guard, agrégalo en la ruta 'protected' en app.routes.ts

@@ -1,4 +1,7 @@
 <div class="protected">
   <h2>Bienvenido, estás autenticado!</h2>
-  <button (click)="auth.logout()">Logout</button>
+  <div class="navigation-buttons">
+    <a href="/admin" class="admin-link">Panel de Administración</a>
+    <button (click)="auth.logout()">Logout</button>
+  </div>
 </div>
