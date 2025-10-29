@@ -33,7 +33,7 @@ import { AdminMateriasComponent } from './admin-materias.component';
 })
 export class AdminComponent implements OnInit {
   activeTab: 'usuarios' | 'gestiones' | 'semestres' | 'modalidades' | 'materias' = 'usuarios';
-
+// TODO modularizar mas, con scream architecture
   usuarioForm: FormGroup;
   gestionForm: FormGroup;
   semestreForm: FormGroup;

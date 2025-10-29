@@ -100,10 +100,9 @@ export class AdminMateriasComponent implements OnInit {
       docenteId: Number(this.materiaForm.value.docenteId),
     };
 
-    // Defensive: ensure cupos is not negative before sending to backend
+    // Cupos positivos
     if (isNaN(payload.cupos) || payload.cupos < 0) {
       payload.cupos = Math.max(0, Number(payload.cupos) || 0);
-      // also update the form control so user sees the corrected value
       this.materiaForm.controls['cupos'].setValue(payload.cupos);
     }
 
