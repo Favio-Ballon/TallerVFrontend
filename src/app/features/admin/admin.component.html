@@ -44,6 +44,24 @@
             <span class="text-xl">🗓️</span>
             <span>Semestres</span>
           </button>
+          <button
+            (click)="setActiveTab('modalidades')"
+            [class]="activeTab === 'modalidades' ?
+              'bg-white/90 text-blue-800 shadow-lg scale-105' :
+              'text-white/80 hover:text-white hover:bg-white/10'"
+            class="flex-1 flex items-center justify-center gap-3 px-6 py-4 rounded-xl font-semibold transition-all duration-300">
+            <span class="text-xl">🏷️</span>
+            <span>Modalidades</span>
+          </button>
+          <button
+            (click)="setActiveTab('materias')"
+            [class]="activeTab === 'materias' ?
+              'bg-white/90 text-blue-800 shadow-lg scale-105' :
+              'text-white/80 hover:text-white hover:bg-white/10'"
+            class="flex-1 flex items-center justify-center gap-3 px-6 py-4 rounded-xl font-semibold transition-all duration-300">
+            <span class="text-xl">📚</span>
+            <span>Materias</span>
+          </button>
         </div>
       </div>
     </nav>
@@ -72,6 +90,8 @@
         (submitSemestre)="onSubmitSemestre()"
         (refreshSemestres)="loadSemestres()">
       </app-admin-semestres>
+  <app-admin-modalidades *ngIf="activeTab === 'modalidades'"></app-admin-modalidades>
+  <app-admin-materias *ngIf="activeTab === 'materias'"></app-admin-materias>
     </main>
   </div>
 </div>

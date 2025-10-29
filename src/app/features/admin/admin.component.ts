@@ -12,6 +12,8 @@ import { AdminService, Usuario, Gestion, Semestre } from '../../core/services/ad
 import { AdminUsuariosComponent } from './admin-usuarios.component';
 import { AdminGestionesComponent } from './admin-gestiones.component';
 import { AdminSemestresComponent } from './admin-semestres.component';
+import { AdminModalidadesComponent } from './admin-modalidades.component';
+import { AdminMateriasComponent } from './admin-materias.component';
 
 @Component({
   selector: 'app-admin',
@@ -23,12 +25,14 @@ import { AdminSemestresComponent } from './admin-semestres.component';
     AdminUsuariosComponent,
     AdminGestionesComponent,
     AdminSemestresComponent,
+    AdminModalidadesComponent,
+    AdminMateriasComponent,
   ],
   templateUrl: './admin.component.html',
   styleUrls: ['./admin.component.css'],
 })
 export class AdminComponent implements OnInit {
-  activeTab: 'usuarios' | 'gestiones' | 'semestres' = 'usuarios';
+  activeTab: 'usuarios' | 'gestiones' | 'semestres' | 'modalidades' | 'materias' = 'usuarios';
 
   usuarioForm: FormGroup;
   gestionForm: FormGroup;
@@ -74,7 +78,7 @@ export class AdminComponent implements OnInit {
     this.loadUsuarios();
   }
 
-  setActiveTab(tab: 'usuarios' | 'gestiones' | 'semestres') {
+  setActiveTab(tab: 'usuarios' | 'gestiones' | 'semestres' | 'modalidades' | 'materias') {
     this.activeTab = tab;
 
     if (tab === 'usuarios') {
@@ -83,6 +87,9 @@ export class AdminComponent implements OnInit {
       this.loadGestiones();
     } else if (tab === 'semestres') {
       this.loadSemestres();
+    } else if (tab === 'modalidades') {
+      // ensure gestiones + modalidades are loaded
+      this.loadGestiones();
     }
   }
 
