@@ -9,7 +9,9 @@ export interface Usuario {
   email: string;
   password?: string;
   telefono: string;
-  rol: 'admin' | 'profesor' | 'estudiante';
+  // el backend puede retornar distintos valores o null, así que lo dejamos flexible
+  rol?: string | null;
+  codigo?: string;
 }
 
 export interface Gestion {
@@ -36,6 +38,11 @@ export class AdminService {
   // Usuario
   createUsuario(usuario: Usuario): Observable<any> {
     return this.http.post(`${this.apiBase}/auth/register`, usuario);
+  }
+
+  getUsuarios(filter?: { rol?: string }): Observable<Usuario[]> {
+    const body = filter ? filter : {};
+    return this.http.post<Usuario[]>(`${this.apiBase}/auth/usuarios`, body);
   }
 
   // Gestion

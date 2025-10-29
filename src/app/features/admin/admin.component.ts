@@ -9,11 +9,21 @@ import {
 } from '@angular/forms';
 import { AuthService } from '../../core/auth/auth.service';
 import { AdminService, Usuario, Gestion, Semestre } from '../../core/services/admin.service';
+import { AdminUsuariosComponent } from './admin-usuarios.component';
+import { AdminGestionesComponent } from './admin-gestiones.component';
+import { AdminSemestresComponent } from './admin-semestres.component';
 
 @Component({
   selector: 'app-admin',
   standalone: true,
-  imports: [CommonModule, FormsModule, ReactiveFormsModule],
+  imports: [
+    CommonModule,
+    FormsModule,
+    ReactiveFormsModule,
+    AdminUsuariosComponent,
+    AdminGestionesComponent,
+    AdminSemestresComponent,
+  ],
   templateUrl: './admin.component.html',
   styleUrls: ['./admin.component.css'],
 })
@@ -23,7 +33,6 @@ export class AdminComponent implements OnInit {
   usuarioForm: FormGroup;
   gestionForm: FormGroup;
   semestreForm: FormGroup;
-
 
   usuarios: Usuario[] = [];
   gestiones: Gestion[] = [];
@@ -61,12 +70,16 @@ export class AdminComponent implements OnInit {
 
   ngOnInit() {
     this.loadGestiones();
+    // Cargar la lista de usuarios inicialmente (por defecto traer estudiantes)
+    this.loadUsuarios();
   }
 
   setActiveTab(tab: 'usuarios' | 'gestiones' | 'semestres') {
     this.activeTab = tab;
 
-    if (tab === 'gestiones') {
+    if (tab === 'usuarios') {
+      this.loadUsuarios();
+    } else if (tab === 'gestiones') {
       this.loadGestiones();
     } else if (tab === 'semestres') {
       this.loadSemestres();
@@ -84,6 +97,8 @@ export class AdminComponent implements OnInit {
           this.usuarioForm.reset();
           this.usuarioForm.patchValue({ rol: 'estudiante' });
           alert('Usuario creado exitosamente');
+          // recargar la lista de usuarios después de crear uno
+          this.loadUsuarios();
           this.loadingUsuarios = false;
         },
         error: (error: any) => {
@@ -95,6 +110,27 @@ export class AdminComponent implements OnInit {
     } else {
       this.markFormGroupTouched(this.usuarioForm);
     }
+  }
+
+  loadUsuarios(role: string | undefined = 'estudiante') {
+    this.loadingUsuarios = true;
+
+    // Si role es undefined (o vacio) pedimos todo, si no pedimos por rol
+    const fetch$ =
+      role === undefined || role === ''
+        ? this.adminService.getUsuarios()
+        : this.adminService.getUsuarios({ rol: role });
+
+    fetch$.subscribe({
+      next: (usuarios: Usuario[]) => {
+        this.usuarios = usuarios;
+        this.loadingUsuarios = false;
+      },
+      error: (error: any) => {
+        console.error('Error al cargar usuarios:', error);
+        this.loadingUsuarios = false;
+      },
+    });
   }
 
   // Gestion

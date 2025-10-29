@@ -1,0 +1,161 @@
+<div class="bg-white/95 rounded-2xl shadow-2xl p-8 backdrop-blur-lg border border-white/30">
+  <div class="text-center mb-8">
+    <h2 class="text-3xl font-bold text-gray-800 mb-2">Crear Nuevo Usuario</h2>
+    <p class="text-gray-600">Agrega un nuevo usuario al sistema académico</p>
+  </div>
+
+  <form [formGroup]="usuarioForm" (ngSubmit)="submitUsuario.emit()" class="space-y-6">
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+
+      <div>
+        <label class="block text-sm font-semibold text-gray-700 mb-2">Nombre *</label>
+        <input
+          type="text"
+          formControlName="nombre"
+          placeholder="Ingresa el nombre"
+          [class]="usuarioForm.get('nombre')?.invalid && usuarioForm.get('nombre')?.touched ?
+            'w-full px-4 py-3 border-2 border-red-400 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 transition' :
+            'w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition'"
+        />
+        <div *ngIf="usuarioForm.get('nombre')?.invalid && usuarioForm.get('nombre')?.touched"
+             class="text-red-500 text-sm mt-1 flex items-center gap-1">
+          <span>⚠️</span> El nombre es requerido
+        </div>
+      </div>
+
+      <!-- Apellido -->
+      <div>
+        <label class="block text-sm font-semibold text-gray-700 mb-2">Apellido *</label>
+        <input
+          type="text"
+          formControlName="apellido"
+          placeholder="Ingresa el apellido"
+          [class]="usuarioForm.get('apellido')?.invalid && usuarioForm.get('apellido')?.touched ?
+            'w-full px-4 py-3 border-2 border-red-400 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 transition' :
+            'w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition'"
+        />
+        <div *ngIf="usuarioForm.get('apellido')?.invalid && usuarioForm.get('apellido')?.touched"
+             class="text-red-500 text-sm mt-1 flex items-center gap-1">
+          <span>⚠️</span> El apellido es requerido
+        </div>
+      </div>
+
+      <!-- Email -->
+      <div>
+        <label class="block text-sm font-semibold text-gray-700 mb-2">Email *</label>
+        <input
+          type="email"
+          formControlName="email"
+          placeholder="ejemplo@nur.edu.bo"
+          [class]="usuarioForm.get('email')?.invalid && usuarioForm.get('email')?.touched ?
+            'w-full px-4 py-3 border-2 border-red-400 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 transition' :
+            'w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition'"
+        />
+        <div *ngIf="usuarioForm.get('email')?.invalid && usuarioForm.get('email')?.touched"
+             class="text-red-500 text-sm mt-1 flex items-center gap-1">
+          <span>⚠️</span>
+          <span *ngIf="usuarioForm.get('email')?.errors?.['required']">El email es requerido</span>
+          <span *ngIf="usuarioForm.get('email')?.errors?.['email']">El email no es válido</span>
+        </div>
+      </div>
+
+      <!-- Teléfono -->
+      <div>
+        <label class="block text-sm font-semibold text-gray-700 mb-2">Teléfono *</label>
+        <input
+          type="text"
+          formControlName="telefono"
+          placeholder="+591 7xxxxxxx"
+          [class]="usuarioForm.get('telefono')?.invalid && usuarioForm.get('telefono')?.touched ?
+            'w-full px-4 py-3 border-2 border-red-400 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 transition' :
+            'w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition'"
+        />
+        <div *ngIf="usuarioForm.get('telefono')?.invalid && usuarioForm.get('telefono')?.touched"
+             class="text-red-500 text-sm mt-1 flex items-center gap-1">
+          <span>⚠️</span> El teléfono es requerido
+        </div>
+      </div>
+
+      <!-- Contraseña -->
+      <div>
+        <label class="block text-sm font-semibold text-gray-700 mb-2">Contraseña *</label>
+        <input
+          type="password"
+          formControlName="password"
+          placeholder="••••••••"
+          [class]="usuarioForm.get('password')?.invalid && usuarioForm.get('password')?.touched ?
+            'w-full px-4 py-3 border-2 border-red-400 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 transition' :
+            'w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition'"
+        />
+        <div *ngIf="usuarioForm.get('password')?.invalid && usuarioForm.get('password')?.touched"
+             class="text-red-500 text-sm mt-1 flex items-center gap-1">
+          <span>⚠️</span>
+          <span *ngIf="usuarioForm.get('password')?.errors?.['required']">La contraseña es requerida</span>
+          <span *ngIf="usuarioForm.get('password')?.errors?.['minlength']">Mínimo 4 caracteres</span>
+        </div>
+      </div>
+
+      <!-- Rol -->
+      <div>
+        <label class="block text-sm font-semibold text-gray-700 mb-2">Rol *</label>
+        <select
+          formControlName="rol"
+          [class]="usuarioForm.get('rol')?.invalid && usuarioForm.get('rol')?.touched ?
+            'w-full px-4 py-3 border-2 border-red-400 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 transition' :
+            'w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition'"
+        >
+          <option value="estudiante">👨‍🎓 Estudiante</option>
+          <option value="profesor">👨‍🏫 Profesor</option>
+          <option value="admin">👨‍💼 Administrador</option>
+        </select>
+      </div>
+    </div>
+
+    <button
+      type="submit"
+      [disabled]="loadingUsuarios"
+      class="w-full py-3 bg-gradient-to-r from-blue-600 to-blue-700 text-white font-bold rounded-lg shadow-lg hover:scale-105 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2">
+      <span *ngIf="loadingUsuarios" class="animate-spin">⏳</span>
+      <span *ngIf="!loadingUsuarios">✅</span>
+      {{ loadingUsuarios ? 'Creando Usuario...' : 'Crear Usuario' }}
+    </button>
+  </form>
+</div>
+
+<!-- Lista de estudiantes/usuarios -->
+<div class="mt-6">
+  <div class="bg-gray-50/80 rounded-xl p-6 border border-gray-200">
+    <div class="flex justify-between items-center mb-4">
+      <h3 class="text-xl font-semibold text-gray-800 flex items-center gap-2">👥 Usuarios</h3>
+      <div class="flex items-center gap-3">
+        <label class="text-sm text-gray-700">Filtrar por rol:</label>
+        <select class="px-3 py-2 rounded-lg border" [(ngModel)]="selectedRole">
+          <option value="">Todos</option>
+          <option value="admin">admin</option>
+          <option value="estudiante">estudiante</option>
+          <option value="docente">docente</option>
+        </select>
+        <button (click)="refreshUsuarios.emit(selectedRole ? selectedRole : undefined)" class="bg-blue-500 hover:bg-blue-600 text-white px-3 py-2 rounded-lg">🔄 Actualizar</button>
+      </div>
+    </div>
+
+    <div *ngIf="usuarios && usuarios.length > 0" class="space-y-3">
+      <div *ngFor="let u of usuarios" class="bg-white p-4 rounded-lg shadow-sm border border-gray-200 hover:shadow-md transition-shadow">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center">
+            <span class="text-lg">👤</span>
+          </div>
+          <div class="flex-1">
+            <p class="font-semibold text-gray-800">{{ u.nombre }} {{ u.apellido }} <span class="text-sm text-gray-500">({{ u.codigo }})</span></p>
+            <p class="text-sm text-gray-600">{{ u.email }} • {{ u.telefono }}</p>
+            <p class="text-xs text-gray-500">Rol: {{ u.rol || 'Sin asignar' }} • ID: {{ u.id }}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div *ngIf="!usuarios || usuarios.length === 0" class="text-center text-gray-500">
+      No hay usuarios para mostrar
+    </div>
+  </div>
+</div>

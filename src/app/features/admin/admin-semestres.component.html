@@ -1,0 +1,139 @@
+<div class="bg-white/95 rounded-2xl shadow-2xl p-8 backdrop-blur-lg border border-white/30">
+  <div class="text-center mb-8">
+    <h2 class="text-3xl font-bold text-gray-800 mb-2">🗓️ Administrar Semestres</h2>
+    <p class="text-gray-600">Configura los períodos semestrales</p>
+  </div>
+
+  <form [formGroup]="semestreForm" (ngSubmit)="submitSemestre.emit()" class="space-y-6 mb-8">
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <!-- Nombre del Semestre -->
+      <div>
+        <label class="block text-sm font-semibold text-gray-700 mb-2">Nombre del Semestre *</label>
+        <select
+          formControlName="nombre"
+          [class]="semestreForm.get('nombre')?.invalid && semestreForm.get('nombre')?.touched ?
+            'w-full px-4 py-3 border-2 border-red-400 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 transition' :
+            'w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition'"
+        >
+          <option value="">Seleccionar semestre</option>
+          <option value="I"> I Semestre</option>
+          <option value="II"> II Semestre</option>
+          <option value="Verano"> Verano</option>
+        </select>
+        <div *ngIf="semestreForm.get('nombre')?.invalid && semestreForm.get('nombre')?.touched"
+             class="text-red-500 text-sm mt-1 flex items-center gap-1">
+          <span>⚠️</span> Selecciona un semestre
+        </div>
+      </div>
+
+      <!-- Gestión -->
+      <div>
+        <label class="block text-sm font-semibold text-gray-700 mb-2">Gestión *</label>
+        <select
+          formControlName="gestionId"
+          [class]="semestreForm.get('gestionId')?.invalid && semestreForm.get('gestionId')?.touched ?
+            'w-full px-4 py-3 border-2 border-red-400 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 transition' :
+            'w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition'"
+        >
+          <option value="">Seleccionar gestión</option>
+          <option *ngFor="let gestion of gestiones" [value]="gestion.id">
+            📅 {{ gestion.ano }}
+          </option>
+        </select>
+        <div *ngIf="semestreForm.get('gestionId')?.invalid && semestreForm.get('gestionId')?.touched"
+             class="text-red-500 text-sm mt-1 flex items-center gap-1">
+          <span>⚠️</span> Selecciona una gestión
+        </div>
+      </div>
+
+      <!-- Fecha de Inicio -->
+      <div>
+        <label class="block text-sm font-semibold text-gray-700 mb-2">Fecha de Inicio *</label>
+        <input
+          type="date"
+          formControlName="fechaInicio"
+          [class]="semestreForm.get('fechaInicio')?.invalid && semestreForm.get('fechaInicio')?.touched ?
+            'w-full px-4 py-3 border-2 border-red-400 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 transition' :
+            'w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition'"
+        />
+        <div *ngIf="semestreForm.get('fechaInicio')?.invalid && semestreForm.get('fechaInicio')?.touched"
+             class="text-red-500 text-sm mt-1 flex items-center gap-1">
+          <span>⚠️</span> Selecciona la fecha de inicio
+        </div>
+      </div>
+
+      <!-- Fecha de Fin -->
+      <div>
+        <label class="block text-sm font-semibold text-gray-700 mb-2">Fecha de Fin *</label>
+        <input
+          type="date"
+          formControlName="fechaFin"
+          [class]="semestreForm.get('fechaFin')?.invalid && semestreForm.get('fechaFin')?.touched ?
+            'w-full px-4 py-3 border-2 border-red-400 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 transition' :
+            'w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition'"
+        />
+        <div *ngIf="semestreForm.get('fechaFin')?.invalid && semestreForm.get('fechaFin')?.touched"
+             class="text-red-500 text-sm mt-1 flex items-center gap-1">
+          <span>⚠️</span> Selecciona la fecha de fin
+        </div>
+      </div>
+    </div>
+
+    <button
+      type="submit"
+      [disabled]="loadingSemestres || gestiones.length === 0"
+      class="w-full py-3 bg-gradient-to-r from-purple-600 to-purple-700 text-white font-bold rounded-lg shadow-lg hover:scale-105 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2">
+      <span *ngIf="loadingSemestres" class="animate-spin">⏳</span>
+      <span *ngIf="!loadingSemestres"></span>
+      {{ loadingSemestres ? 'Creando Semestre...' : 'Crear Semestre' }}
+    </button>
+
+    <div *ngIf="gestiones.length === 0"
+         class="bg-amber-100 border border-amber-300 text-amber-800 px-4 py-3 rounded-lg flex items-center gap-2">
+      <span>⚠️</span>
+      Primero debes crear una gestión para poder agregar semestres
+    </div>
+  </form>
+
+
+  <div *ngIf="semestres.length > 0" class="bg-gray-50/80 rounded-xl p-6 border border-gray-200 mt-6">
+    <div class="flex justify-between items-center mb-4">
+      <h3 class="text-xl font-semibold text-gray-800 flex items-center gap-2">
+        📋 Semestres Existentes
+      </h3>
+      <button
+        (click)="refreshSemestres.emit()"
+        class="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-lg font-medium transition-colors flex items-center gap-2">
+        <span>🔄</span> Actualizar
+      </button>
+    </div>
+    <div class="space-y-3">
+      <div *ngFor="let semestre of semestres"
+           class="bg-white p-4 rounded-lg shadow-sm border border-gray-200 hover:shadow-md transition-shadow">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 bg-purple-100 rounded-lg flex items-center justify-center">
+            <span class="text-lg">🗓️</span>
+          </div>
+          <div class="flex-1">
+            <p class="font-semibold text-gray-800">{{ semestre.nombre }} Semestre</p>
+            <p class="text-sm text-gray-600">{{ semestre.fechaInicio }} → {{ semestre.fechaFin }}</p>
+            <p class="text-xs text-gray-500">Gestión ID: {{ semestre.gestionId }}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Mensaje cuando no hay semestres -->
+  <div *ngIf="semestres.length === 0" class="bg-gray-50/80 rounded-xl p-6 border border-gray-200 mt-6 text-center">
+    <div class="text-gray-500">
+      <span class="text-2xl">📭</span>
+      <p class="mt-2 text-sm">No hay semestres creados aún</p>
+      <button
+        (click)="refreshSemestres.emit()"
+        class="mt-3 bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg text-sm transition-colors">
+        🔄 Verificar semestres
+      </button>
+    </div>
+  </div>
+</div>
