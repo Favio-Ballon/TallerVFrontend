@@ -59,8 +59,8 @@ export class AdminMateriasComponent implements OnInit {
   }
 
   loadDocentes() {
-    // Reuse getUsuarios with filter rol=profesor
-    this.adminService.getUsuarios({ rol: 'profesor' }).subscribe({
+    // Reuse getUsuarios with filter rol=docente
+    this.adminService.getUsuarios({ rol: 'docente' }).subscribe({
       next: (users) => {
         // map to Docente minimal shape
         this.docentes = users.map(

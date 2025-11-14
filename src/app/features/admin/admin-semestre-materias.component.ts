@@ -63,8 +63,8 @@ export class AdminSemestreMateriasComponent implements OnInit {
     this.adminService.getSemestres().subscribe({ next: (s) => (this.semestres = s) });
     this.adminService.getMaterias().subscribe({ next: (m) => (this.materias = m) });
     this.adminService.getModalidades().subscribe({ next: (md) => (this.modalidades = md) });
-    // docentes via usuarios rol profesor
-    this.adminService.getUsuarios({ rol: 'profesor' }).subscribe({
+    // docentes via usuarios rol docente
+    this.adminService.getUsuarios({ rol: 'docente' }).subscribe({
       next: (u) =>
         (this.docentes = u.map(
           (x) => ({ id: x.id, nombre: x.nombre, apellido: x.apellido } as Docente)

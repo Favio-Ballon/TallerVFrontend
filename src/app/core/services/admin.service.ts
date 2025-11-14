@@ -69,18 +69,6 @@ export interface SemestreMateria {
   estaActivo: boolean;
 }
 
-export interface Matriculacion {
-  id?: number;
-  alumno: Usuario;
-  docente: Docente;
-  materia: Materia;
-  faltas: number;
-  estaAprobado: boolean;
-  notaFinal: number;
-  estaConsolidado: boolean;
-  semestreMateriaId?: number;
-}
-
 @Injectable({
   providedIn: 'root',
 })
@@ -216,22 +204,4 @@ export class AdminService {
   }
 
   // Matriculacion (inscribir alumnos)
-  createMatriculacion(payload: {
-    alumnoId: number;
-    semestreMateriaId: number;
-  }): Observable<Matriculacion> {
-    return this.http.post<Matriculacion>(`${this.apiBase}/matriculacion/`, payload);
-  }
-
-  deleteMatriculacion(id: number): Observable<any> {
-    return this.http.delete(`${this.apiBase}/matriculacion/${id}`);
-  }
-
-  getMatriculacionById(id: number): Observable<Matriculacion> {
-    return this.http.get<Matriculacion>(`${this.apiBase}/matriculacion/${id}`);
-  }
-
-  getMatriculaciones(): Observable<Matriculacion[]> {
-    return this.http.get<Matriculacion[]>(`${this.apiBase}/matriculacion/`);
-  }
 }
