@@ -54,6 +54,33 @@ export interface Materia {
   docente?: Docente;
 }
 
+export interface Evaluacion {
+  id?: number;
+  nombre: string;
+}
+
+export interface SemestreMateria {
+  id?: number;
+  materia: Materia;
+  semestre: Semestre;
+  docente: Docente;
+  modalidad: Modalidad;
+  cupos: number;
+  estaActivo: boolean;
+}
+
+export interface Matriculacion {
+  id?: number;
+  alumno: Usuario;
+  docente: Docente;
+  materia: Materia;
+  faltas: number;
+  estaAprobado: boolean;
+  notaFinal: number;
+  estaConsolidado: boolean;
+  semestreMateriaId?: number;
+}
+
 @Injectable({
   providedIn: 'root',
 })
@@ -96,6 +123,11 @@ export class AdminService {
     return this.http.get<Modalidad>(`${this.apiBase}/modalidad/${id}`);
   }
 
+  /** Obtener todas las modalidades */
+  getModalidades(): Observable<Modalidad[]> {
+    return this.http.get<Modalidad[]>(`${this.apiBase}/modalidad/`);
+  }
+
   /** Crear modalidad (asumo POST /modalidad/) */
   createModalidad(mod: Partial<Modalidad>): Observable<any> {
     return this.http.post(`${this.apiBase}/modalidad/`, mod);
@@ -126,5 +158,80 @@ export class AdminService {
 
   deleteMateria(id: number): Observable<any> {
     return this.http.delete(`${this.apiBase}/materia/${id}`);
+  }
+
+  // Evaluacion
+  getEvaluaciones(): Observable<Evaluacion[]> {
+    return this.http.get<Evaluacion[]>(`${this.apiBase}/evaluacion/`);
+  }
+
+  createEvaluacion(e: Partial<Evaluacion>): Observable<any> {
+    return this.http.post(`${this.apiBase}/evaluacion/`, e);
+  }
+
+  updateEvaluacion(id: number, e: Partial<Evaluacion>): Observable<any> {
+    return this.http.put(`${this.apiBase}/evaluacion/${id}`, e);
+  }
+
+  deleteEvaluacion(id: number): Observable<any> {
+    return this.http.delete(`${this.apiBase}/evaluacion/${id}`);
+  }
+
+  // Semestre-Materia
+  getSemestreMaterias(): Observable<SemestreMateria[]> {
+    return this.http.get<SemestreMateria[]>(`${this.apiBase}/semestre-materia/`);
+  }
+
+  createSemestreMateria(
+    s: Partial<SemestreMateria> & {
+      materiaId: number;
+      semestreId: number;
+      docenteId: number;
+      modalidadId: number;
+      cupos: number;
+    }
+  ): Observable<any> {
+    return this.http.post(`${this.apiBase}/semestre-materia/`, s);
+  }
+
+  updateSemestreMateria(id: number, s: Partial<SemestreMateria>): Observable<any> {
+    return this.http.put(`${this.apiBase}/semestre-materia/${id}`, s);
+  }
+
+  deleteSemestreMateria(id: number): Observable<any> {
+    return this.http.delete(`${this.apiBase}/semestre-materia/${id}`);
+  }
+  /**
+   * Cierra (desactiva) una asignación semestre-materia.
+   * El backend responde con texto plano (p.ej. "La materia ha sido cerrada exitosamente.").
+   * Por eso solicitamos responseType: 'text' para evitar que HttpClient intente parsear JSON.
+   */
+  cerrarSemestreMateria(id: number): Observable<string> {
+    // Angular typing quirk: request text but HttpClient overloads are strict; cast the result to Observable<string>
+    return this.http.patch(
+      `${this.apiBase}/semestre-materia/cerrar/${id}`,
+      {},
+      { responseType: 'text' as 'json' }
+    ) as Observable<string>;
+  }
+
+  // Matriculacion (inscribir alumnos)
+  createMatriculacion(payload: {
+    alumnoId: number;
+    semestreMateriaId: number;
+  }): Observable<Matriculacion> {
+    return this.http.post<Matriculacion>(`${this.apiBase}/matriculacion/`, payload);
+  }
+
+  deleteMatriculacion(id: number): Observable<any> {
+    return this.http.delete(`${this.apiBase}/matriculacion/${id}`);
+  }
+
+  getMatriculacionById(id: number): Observable<Matriculacion> {
+    return this.http.get<Matriculacion>(`${this.apiBase}/matriculacion/${id}`);
+  }
+
+  getMatriculaciones(): Observable<Matriculacion[]> {
+    return this.http.get<Matriculacion[]>(`${this.apiBase}/matriculacion/`);
   }
 }

@@ -1,4 +1,4 @@
-<div class="min-h-screen bg-gradient-to-br from-blue-900 via-blue-600 to-blue-400">
+<div class="min-h-screen bg-gradient-to-br from-blue-900 via-blue-600 to-blue-400 admin-root">
   <header class="sticky top-0 z-50 bg-white/90 backdrop-blur-lg border-b border-white/20 shadow-lg">
     <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
       <div class="flex items-center gap-4">
@@ -23,7 +23,6 @@
               'bg-white/90 text-blue-800 shadow-lg scale-105' :
               'text-white/80 hover:text-white hover:bg-white/10'"
             class="flex-1 flex items-center justify-center gap-3 px-6 py-4 rounded-xl font-semibold transition-all duration-300">
-            <span class="text-xl">👥</span>
             <span>Usuarios</span>
           </button>
           <button
@@ -32,7 +31,6 @@
               'bg-white/90 text-blue-800 shadow-lg scale-105' :
               'text-white/80 hover:text-white hover:bg-white/10'"
             class="flex-1 flex items-center justify-center gap-3 px-6 py-4 rounded-xl font-semibold transition-all duration-300">
-            <span class="text-xl">📅</span>
             <span>Gestiones</span>
           </button>
           <button
@@ -41,7 +39,6 @@
               'bg-white/90 text-blue-800 shadow-lg scale-105' :
               'text-white/80 hover:text-white hover:bg-white/10'"
             class="flex-1 flex items-center justify-center gap-3 px-6 py-4 rounded-xl font-semibold transition-all duration-300">
-            <span class="text-xl">🗓️</span>
             <span>Semestres</span>
           </button>
           <button
@@ -50,7 +47,6 @@
               'bg-white/90 text-blue-800 shadow-lg scale-105' :
               'text-white/80 hover:text-white hover:bg-white/10'"
             class="flex-1 flex items-center justify-center gap-3 px-6 py-4 rounded-xl font-semibold transition-all duration-300">
-            <span class="text-xl">🏷️</span>
             <span>Modalidades</span>
           </button>
           <button
@@ -59,8 +55,23 @@
               'bg-white/90 text-blue-800 shadow-lg scale-105' :
               'text-white/80 hover:text-white hover:bg-white/10'"
             class="flex-1 flex items-center justify-center gap-3 px-6 py-4 rounded-xl font-semibold transition-all duration-300">
-            <span class="text-xl">📚</span>
             <span>Materias</span>
+          </button>
+          <button
+            (click)="setActiveTab('semestreMaterias')"
+            [class]="activeTab === 'semestreMaterias' ?
+              'bg-white/90 text-blue-800 shadow-lg scale-105' :
+              'text-white/80 hover:text-white hover:bg-white/10'"
+            class="flex-1 flex items-center justify-center gap-3 px-6 py-4 rounded-xl font-semibold transition-all duration-300">
+            <span>Semestre-Materias</span>
+          </button>
+          <button
+            (click)="setActiveTab('evaluaciones')"
+            [class]="activeTab === 'evaluaciones' ?
+              'bg-white/90 text-blue-800 shadow-lg scale-105' :
+              'text-white/80 hover:text-white hover:bg-white/10'"
+            class="flex-1 flex items-center justify-center gap-3 px-6 py-4 rounded-xl font-semibold transition-all duration-300">
+            <span>Evaluaciones</span>
           </button>
         </div>
       </div>
@@ -92,6 +103,9 @@
       </app-admin-semestres>
   <app-admin-modalidades *ngIf="activeTab === 'modalidades'"></app-admin-modalidades>
   <app-admin-materias *ngIf="activeTab === 'materias'"></app-admin-materias>
+  <!-- Matriculaciones moved to features/docentes; rendered from there when needed -->
+  <app-admin-evaluaciones *ngIf="activeTab === 'evaluaciones'"></app-admin-evaluaciones>
+  <app-admin-semestre-materias *ngIf="activeTab === 'semestreMaterias'"></app-admin-semestre-materias>
     </main>
   </div>
 </div>

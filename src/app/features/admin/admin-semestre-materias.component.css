@@ -1,0 +1,105 @@
+/* Restored styles for Semestre-Materias admin card
+   - Provides a translucent white card with rounded corners and shadow
+   - Table and button styles to match the admin UI shown in the screenshot
+*/
+
+.admin-section {
+  padding: 1.25rem;
+  color: #07203a;
+}
+
+.admin-card {
+  background: rgba(255,255,255,0.95);
+  border-radius: 1rem; /* rounded-2xl */
+  padding: 1.5rem;
+  box-shadow: 0 25px 50px -12px rgba(0,0,0,0.25); /* shadow-2xl */
+  border: 1px solid rgba(255,255,255,0.30);
+  backdrop-filter: blur(8px);
+}
+
+.admin-form-row {
+  margin-bottom: 0.75rem;
+}
+
+.admin-form-row label {
+  display: block;
+  margin-bottom: 0.25rem;
+  font-weight: 600;
+}
+
+.admin-form-row select,
+.admin-form-row input[type="number"],
+.admin-form-row input[type="text"] {
+  width: 100%;
+  padding: 0.5rem 0.6rem;
+  border: 1px solid #cbd5e1; /* gray-300 */
+  border-radius: 0.5rem;
+  background: white;
+}
+
+.actions {
+  margin-top: 0.8rem;
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.6rem 1rem;
+  border-radius: 1rem;
+  border: 1px solid rgba(0,0,0,0.1);
+  background: transparent;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.btn-primary {
+  background: rgba(59,130,246,0.12);
+  color: #002a6b;
+  border-color: rgba(59,130,246,0.5);
+}
+
+.btn-danger {
+  background: rgba(239,68,68,0.12);
+  color: #7b0f0f;
+  border-color: rgba(239,68,68,0.5);
+}
+
+.btn-warning {
+  background: rgba(250,204,21,0.12);
+  color: #4a2f00;
+  border-color: rgba(250,204,21,0.5);
+}
+
+.admin-section table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 1rem;
+}
+
+.admin-section th,
+.admin-section td {
+  padding: 0.9rem 0.75rem;
+  border: 1px solid rgba(255,255,255,0.18);
+  vertical-align: middle;
+}
+
+.admin-section thead th {
+  background: rgba(255,255,255,0.06);
+  font-weight: 700;
+  text-align: left;
+}
+
+.admin-actions-cell button {
+  margin-right: 0.6rem;
+}
+
+/* responsive tweaks */
+@media (max-width: 800px) {
+  .admin-section table, .admin-section thead, .admin-section tbody, .admin-section th, .admin-section td, .admin-section tr {
+    display: block;
+  }
+  .admin-section thead {
+    display: none;
+  }
+}

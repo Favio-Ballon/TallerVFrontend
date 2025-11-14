@@ -14,6 +14,8 @@ import { AdminGestionesComponent } from './admin-gestiones.component';
 import { AdminSemestresComponent } from './admin-semestres.component';
 import { AdminModalidadesComponent } from './admin-modalidades.component';
 import { AdminMateriasComponent } from './admin-materias.component';
+import { AdminEvaluacionesComponent } from './admin-evaluaciones.component';
+import { AdminSemestreMateriasComponent } from './admin-semestre-materias.component';
 
 @Component({
   selector: 'app-admin',
@@ -27,13 +29,22 @@ import { AdminMateriasComponent } from './admin-materias.component';
     AdminSemestresComponent,
     AdminModalidadesComponent,
     AdminMateriasComponent,
+    AdminEvaluacionesComponent,
+    AdminSemestreMateriasComponent,
   ],
   templateUrl: './admin.component.html',
   styleUrls: ['./admin.component.css'],
 })
 export class AdminComponent implements OnInit {
-  activeTab: 'usuarios' | 'gestiones' | 'semestres' | 'modalidades' | 'materias' = 'usuarios';
-// TODO modularizar mas, con scream architecture
+  activeTab:
+    | 'usuarios'
+    | 'gestiones'
+    | 'semestres'
+    | 'modalidades'
+    | 'materias'
+    | 'evaluaciones'
+    | 'semestreMaterias' = 'usuarios';
+  // TODO modularizar mas, con scream architecture
   usuarioForm: FormGroup;
   gestionForm: FormGroup;
   semestreForm: FormGroup;
@@ -77,8 +88,16 @@ export class AdminComponent implements OnInit {
     // Cargar la lista de usuarios inicialmente (por defecto traer estudiantes)
     this.loadUsuarios();
   }
-
-  setActiveTab(tab: 'usuarios' | 'gestiones' | 'semestres' | 'modalidades' | 'materias') {
+  setActiveTab(
+    tab:
+      | 'usuarios'
+      | 'gestiones'
+      | 'semestres'
+      | 'modalidades'
+      | 'materias'
+      | 'evaluaciones'
+      | 'semestreMaterias'
+  ) {
     this.activeTab = tab;
 
     if (tab === 'usuarios') {
@@ -202,10 +221,10 @@ export class AdminComponent implements OnInit {
   }
 
   loadSemestres() {
-    console.log('🔄 Cargando semestres...');
+    console.log('Cargando semestres...');
     this.adminService.getSemestres().subscribe({
       next: (semestres: Semestre[]) => {
-        console.log('✅ Semestres cargados:', semestres);
+        console.log('Semestres cargados:', semestres);
         this.semestres = semestres;
       },
       error: (error: any) => {

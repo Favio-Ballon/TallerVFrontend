@@ -1,1 +1,51 @@
 @import "tailwindcss";
+
+/* Placeholder gris consistente en todos los inputs/textarea del proyecto */
+input::placeholder,
+textarea::placeholder {
+	color: rgba(156,163,175); /* gray-400 */
+	opacity: 1;
+}
+
+/* Compatibilidad con navegadores */
+::-webkit-input-placeholder { color: rgba(156,163,175); }
+:-moz-placeholder { color: rgba(156,163,175); opacity: 1; } /* Firefox 4-18 */
+::-moz-placeholder { color: rgba(156,163,175); opacity: 1; } /* Firefox 19+ */
+:-ms-input-placeholder { color: rgba(156,163,175); } /* IE 10+ */
+::-ms-input-placeholder { color: rgba(156,163,175); } /* Edge */
+
+/* --- Uniform button shapes inside the admin area ---
+	 Scope: elements inside the admin root (added class `admin-root` on admin template).
+	 These rules only set shape/padding/alignment; color/background stays controlled
+	 by existing utility classes so buttons keep their color theme.
+*/
+.admin-root button,
+.admin-root input[type="button"],
+.admin-root input[type="submit"],
+.admin-root .btn {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	gap: 0.5rem;
+	padding: 0.5rem 0.9rem; /* vertical / horizontal */
+	border-radius: 0.75rem; /* rounded-lg-ish */
+	min-height: 40px;
+	font-weight: 600;
+	line-height: 1;
+	border-width: 1px;
+}
+
+/* Ensure disabled buttons look slightly dimmer while keeping layout */
+.admin-root button:disabled,
+.admin-root input[disabled] {
+	opacity: 0.55;
+	cursor: not-allowed;
+}
+
+/* Small variant for compact controls (use class .admin-btn-sm on button if needed) */
+.admin-root .admin-btn-sm {
+	padding: 0.35rem 0.6rem;
+	min-height: 32px;
+	border-radius: 0.5rem;
+	font-size: 0.9rem;
+}
