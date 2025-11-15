@@ -1,0 +1,70 @@
+/* Responsive tweaks for admin navigation */
+.admin-root nav .flex {
+	/* allow wrapping of the buttons so they can stack on small screens */
+	flex-wrap: wrap;
+}
+
+.admin-root nav .flex > button {
+	/* ensure a reasonable minimum so buttons don't collapse on medium screens */
+	min-width: 140px;
+}
+
+/* On very small screens let buttons be full width (the template adds w-full on small sizes) */
+@media (max-width: 420px) {
+	.admin-root nav .flex > button {
+		min-width: 0;
+		width: 100%;
+	}
+}
+
+/* Tighten header spacing on small screens */
+@media (max-width: 640px) {
+	header .max-w-7xl {
+		padding-left: 1rem;
+		padding-right: 1rem;
+	}
+}
+
+/* Mobile: present nav as a clean vertical list */
+@media (max-width: 640px) {
+	.admin-root nav ul {
+		display: none; /* hidden by default on mobile; toggled via .block class */
+		padding: 0;
+		margin: 0;
+	}
+	/* when Angular adds the Tailwind 'block' class we force it visible */
+	.admin-root nav ul.block {
+		display: block !important;
+	}
+	.admin-root nav ul li {
+		list-style: none;
+		margin: 0;
+		padding: 0.15rem 0; /* small vertical breathing room between items */
+		border-bottom: 1px solid rgba(255,255,255,0.04);
+	}
+	.admin-root nav ul li button {
+		justify-content: flex-start; /* align text to the left in list view */
+		padding-left: 1rem;
+		padding-right: 1rem;
+		width: 100%;
+		text-align: left;
+	}
+}
+
+	/* When the mobile menu is expanded we use a light translucent background */
+	@media (max-width: 640px) {
+		.admin-root nav .mobile-open-bg {
+			background: rgba(255,255,255,0.04);
+		}
+	}
+
+/* Desktop: remove list borders and restore horizontal layout */
+@media (min-width: 641px) {
+	.admin-root nav ul li {
+		border: none;
+	}
+	.admin-root nav ul li button {
+		text-align: center;
+	}
+}
+

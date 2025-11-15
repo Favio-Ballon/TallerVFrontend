@@ -1,6 +1,6 @@
 <div class="min-h-screen bg-gradient-to-br from-blue-900 via-blue-600 to-blue-400 admin-root">
   <header class="sticky top-0 z-50 bg-white/90 backdrop-blur-lg border-b border-white/20 shadow-lg">
-    <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
+  <div class="max-w-7xl mx-auto px-6 py-4 flex flex-col sm:flex-row sm:justify-between items-center gap-3">
       <div class="flex items-center gap-4">
         <img src="https://notas2.nur.edu/Docentes/assets/images/nur.png" alt="Logo NUR" class="w-14 h-auto drop-shadow-lg hover:scale-105 transition-transform" />
         <h1 class="text-2xl font-bold bg-gradient-to-r from-blue-800 to-blue-600 bg-clip-text text-transparent">Panel de Administración</h1>
@@ -16,64 +16,93 @@
   <div class="max-w-7xl mx-auto px-6 py-8">
     <nav class="mb-8">
       <div class="bg-white/20 backdrop-blur-md rounded-2xl p-2 border border-white/30 shadow-2xl">
-        <div class="flex gap-2">
-          <button
-            (click)="setActiveTab('usuarios')"
-            [class]="activeTab === 'usuarios' ?
-              'bg-white/90 text-blue-800 shadow-lg scale-105' :
-              'text-white/80 hover:text-white hover:bg-white/10'"
-            class="flex-1 flex items-center justify-center gap-3 px-6 py-4 rounded-xl font-semibold transition-all duration-300">
-            <span>Usuarios</span>
-          </button>
-          <button
-            (click)="setActiveTab('gestiones')"
-            [class]="activeTab === 'gestiones' ?
-              'bg-white/90 text-blue-800 shadow-lg scale-105' :
-              'text-white/80 hover:text-white hover:bg-white/10'"
-            class="flex-1 flex items-center justify-center gap-3 px-6 py-4 rounded-xl font-semibold transition-all duration-300">
-            <span>Gestiones</span>
-          </button>
-          <button
-            (click)="setActiveTab('semestres')"
-            [class]="activeTab === 'semestres' ?
-              'bg-white/90 text-blue-800 shadow-lg scale-105' :
-              'text-white/80 hover:text-white hover:bg-white/10'"
-            class="flex-1 flex items-center justify-center gap-3 px-6 py-4 rounded-xl font-semibold transition-all duration-300">
-            <span>Semestres</span>
-          </button>
-          <button
-            (click)="setActiveTab('modalidades')"
-            [class]="activeTab === 'modalidades' ?
-              'bg-white/90 text-blue-800 shadow-lg scale-105' :
-              'text-white/80 hover:text-white hover:bg-white/10'"
-            class="flex-1 flex items-center justify-center gap-3 px-6 py-4 rounded-xl font-semibold transition-all duration-300">
-            <span>Modalidades</span>
-          </button>
-          <button
-            (click)="setActiveTab('materias')"
-            [class]="activeTab === 'materias' ?
-              'bg-white/90 text-blue-800 shadow-lg scale-105' :
-              'text-white/80 hover:text-white hover:bg-white/10'"
-            class="flex-1 flex items-center justify-center gap-3 px-6 py-4 rounded-xl font-semibold transition-all duration-300">
-            <span>Materias</span>
-          </button>
-          <button
-            (click)="setActiveTab('semestreMaterias')"
-            [class]="activeTab === 'semestreMaterias' ?
-              'bg-white/90 text-blue-800 shadow-lg scale-105' :
-              'text-white/80 hover:text-white hover:bg-white/10'"
-            class="flex-1 flex items-center justify-center gap-3 px-6 py-4 rounded-xl font-semibold transition-all duration-300">
-            <span>Semestre-Materias</span>
-          </button>
-          <button
-            (click)="setActiveTab('evaluaciones')"
-            [class]="activeTab === 'evaluaciones' ?
-              'bg-white/90 text-blue-800 shadow-lg scale-105' :
-              'text-white/80 hover:text-white hover:bg-white/10'"
-            class="flex-1 flex items-center justify-center gap-3 px-6 py-4 rounded-xl font-semibold transition-all duration-300">
-            <span>Evaluaciones</span>
+        <!-- Mobile collapsed header: shows active tab and toggle -->
+        <div class="flex items-center justify-between sm:hidden px-2">
+          <div class="text-sm font-semibold text-white/90">{{ getActiveTabLabel() }}</div>
+          <button (click)="toggleNav()" aria-expanded="{{isNavOpen}}" class="p-2 rounded-md bg-white/10">
+            <svg *ngIf="!isNavOpen" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-white" viewBox="0 0 20 20" fill="currentColor">
+              <path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 10.94l3.71-3.71a.75.75 0 111.06 1.06l-4.24 4.24a.75.75 0 01-1.06 0L5.21 8.29a.75.75 0 01.02-1.08z" clip-rule="evenodd" />
+            </svg>
+            <svg *ngIf="isNavOpen" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-white" viewBox="0 0 20 20" fill="currentColor">
+              <path fill-rule="evenodd" d="M14.77 12.79a.75.75 0 01-1.06-.02L10 9.06l-3.71 3.71a.75.75 0 11-1.06-1.06l4.24-4.24a.75.75 0 011.06 0l4.24 4.24a.75.75 0 01-.02 1.06z" clip-rule="evenodd" />
+            </svg>
           </button>
         </div>
+
+        <!-- Navigation list: hidden by default on mobile, becomes block when isNavOpen; always flex on sm+ -->
+        <ul class="hidden sm:flex flex-col sm:flex-row gap-2 w-full list-none p-0 m-0" [ngClass]="{'block': isNavOpen}">
+          <li class="w-full sm:w-auto">
+            <button
+            (click)="selectTab('usuarios')"
+            [class]="activeTab === 'usuarios' ?
+                'bg-white/90 text-blue-800 shadow-lg scale-105' :
+              'text-white/80 hover:text-white hover:bg-white/10'"
+              class="w-full sm:flex-1 flex items-center justify-start sm:justify-center gap-3 px-6 py-4 rounded-xl font-semibold transition-all duration-300 text-left sm:text-center">
+            <span>Usuarios</span>
+          </button>
+          </li>
+          <li class="w-full sm:w-auto">
+            <button
+            (click)="selectTab('gestiones')"
+            [class]="activeTab === 'gestiones' ?
+                'bg-white/90 text-blue-800 shadow-lg scale-105' :
+              'text-white/80 hover:text-white hover:bg-white/10'"
+              class="w-full sm:flex-1 flex items-center justify-start sm:justify-center gap-3 px-6 py-4 rounded-xl font-semibold transition-all duration-300 text-left sm:text-center">
+            <span>Gestiones</span>
+          </button>
+          </li>
+          <li class="w-full sm:w-auto">
+            <button
+            (click)="selectTab('semestres')"
+            [class]="activeTab === 'semestres' ?
+                'bg-white/90 text-blue-800 shadow-lg scale-105' :
+              'text-white/80 hover:text-white hover:bg-white/10'"
+              class="w-full sm:flex-1 flex items-center justify-start sm:justify-center gap-3 px-6 py-4 rounded-xl font-semibold transition-all duration-300 text-left sm:text-center">
+            <span>Semestres</span>
+          </button>
+          </li>
+          <li class="w-full sm:w-auto">
+            <button
+            (click)="selectTab('modalidades')"
+            [class]="activeTab === 'modalidades' ?
+                'bg-white/90 text-blue-800 shadow-lg scale-105' :
+              'text-white/80 hover:text-white hover:bg-white/10'"
+              class="w-full sm:flex-1 flex items-center justify-start sm:justify-center gap-3 px-6 py-4 rounded-xl font-semibold transition-all duration-300 text-left sm:text-center">
+            <span>Modalidades</span>
+          </button>
+          </li>
+          <li class="w-full sm:w-auto">
+            <button
+            (click)="selectTab('materias')"
+            [class]="activeTab === 'materias' ?
+                'bg-white/90 text-blue-800 shadow-lg scale-105' :
+              'text-white/80 hover:text-white hover:bg-white/10'"
+              class="w-full sm:flex-1 flex items-center justify-start sm:justify-center gap-3 px-6 py-4 rounded-xl font-semibold transition-all duration-300 text-left sm:text-center">
+            <span>Materias</span>
+          </button>
+          </li>
+          <li class="w-full sm:w-auto">
+            <button
+            (click)="selectTab('semestreMaterias')"
+            [class]="activeTab === 'semestreMaterias' ?
+                'bg-white/90 text-blue-800 shadow-lg scale-105' :
+              'text-white/80 hover:text-white hover:bg-white/10'"
+              class="w-full sm:flex-1 flex items-center justify-start sm:justify-center gap-3 px-6 py-4 rounded-xl font-semibold transition-all duration-300 text-left sm:text-center">
+            <span>Semestre-Materias</span>
+          </button>
+          </li>
+          <li class="w-full sm:w-auto">
+            <button
+            (click)="selectTab('evaluaciones')"
+            [class]="activeTab === 'evaluaciones' ?
+                'bg-white/90 text-blue-800 shadow-lg scale-105' :
+              'text-white/80 hover:text-white hover:bg-white/10'"
+              class="w-full sm:flex-1 flex items-center justify-start sm:justify-center gap-3 px-6 py-4 rounded-xl font-semibold transition-all duration-300 text-left sm:text-center">
+            <span>Evaluaciones</span>
+          </button>
+          </li>
+        </ul>
+        
       </div>
     </nav>
 

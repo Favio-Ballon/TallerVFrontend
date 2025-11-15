@@ -56,6 +56,8 @@ export class AdminComponent implements OnInit {
   loadingUsuarios = false;
   loadingGestiones = false;
   loadingSemestres = false;
+  // Mobile nav toggle
+  isNavOpen = false;
 
   constructor(
     private fb: FormBuilder,
@@ -109,6 +111,29 @@ export class AdminComponent implements OnInit {
     } else if (tab === 'modalidades') {
       // ensure gestiones + modalidades are loaded
       this.loadGestiones();
+    }
+  }
+
+  toggleNav() {
+    this.isNavOpen = !this.isNavOpen;
+  }
+
+  selectTab(tab: 'usuarios' | 'gestiones' | 'semestres' | 'modalidades' | 'materias' | 'evaluaciones' | 'semestreMaterias') {
+    this.setActiveTab(tab);
+    // close mobile nav after selecting
+    this.isNavOpen = false;
+  }
+
+  getActiveTabLabel() {
+    switch (this.activeTab) {
+      case 'usuarios': return 'Usuarios';
+      case 'gestiones': return 'Gestiones';
+      case 'semestres': return 'Semestres';
+      case 'modalidades': return 'Modalidades';
+      case 'materias': return 'Materias';
+      case 'evaluaciones': return 'Evaluaciones';
+      case 'semestreMaterias': return 'Semestre-Materias';
+      default: return '';
     }
   }
 
