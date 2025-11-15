@@ -17,7 +17,7 @@
     <nav class="mb-8">
       <div class="bg-white/20 backdrop-blur-md rounded-2xl p-2 border border-white/30 shadow-2xl">
         <!-- Mobile collapsed header: shows active tab and toggle -->
-        <div class="flex items-center justify-between sm:hidden px-2">
+        <div class="flex items-center justify-between header-ocultar px-2">
           <div class="text-sm font-semibold text-white/90">{{ getActiveTabLabel() }}</div>
           <button (click)="toggleNav()" aria-expanded="{{isNavOpen}}" class="p-2 rounded-md bg-white/10">
             <svg *ngIf="!isNavOpen" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-white" viewBox="0 0 20 20" fill="currentColor">
