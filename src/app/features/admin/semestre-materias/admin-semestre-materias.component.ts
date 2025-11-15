@@ -14,8 +14,8 @@ import {
   Materia,
   Docente,
   Modalidad,
-} from '../../core/services/admin.service';
-import { ToastService } from '../../shared/toast/toast.service';
+} from '../../../core/services/admin.service';
+import { ToastService } from '../../../shared/toast/toast.service';
 
 @Component({
   selector: 'app-admin-semestre-materias',

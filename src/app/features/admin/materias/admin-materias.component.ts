@@ -7,7 +7,7 @@ import {
   FormGroup,
   Validators,
 } from '@angular/forms';
-import { AdminService, Materia, Semestre, Docente } from '../../core/services/admin.service';
+import { AdminService, Materia, Semestre, Docente } from '../../../core/services/admin.service';
 
 @Component({
   selector: 'app-admin-materias',

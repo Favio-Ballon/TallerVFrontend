@@ -9,13 +9,13 @@ import {
 } from '@angular/forms';
 import { AuthService } from '../../core/auth/auth.service';
 import { AdminService, Usuario, Gestion, Semestre } from '../../core/services/admin.service';
-import { AdminUsuariosComponent } from './admin-usuarios.component';
-import { AdminGestionesComponent } from './admin-gestiones.component';
-import { AdminSemestresComponent } from './admin-semestres.component';
-import { AdminModalidadesComponent } from './admin-modalidades.component';
-import { AdminMateriasComponent } from './admin-materias.component';
-import { AdminEvaluacionesComponent } from './admin-evaluaciones.component';
-import { AdminSemestreMateriasComponent } from './admin-semestre-materias.component';
+import { AdminUsuariosComponent } from './usuarios/admin-usuarios.component';
+import { AdminGestionesComponent } from './gestiones/admin-gestiones.component';
+import { AdminSemestresComponent } from './semestres/admin-semestres.component';
+import { AdminModalidadesComponent } from './modalidades/admin-modalidades.component';
+import { AdminMateriasComponent } from './materias/admin-materias.component';
+import { AdminEvaluacionesComponent } from './evaluaciones/admin-evaluaciones.component';
+import { AdminSemestreMateriasComponent } from './semestre-materias/admin-semestre-materias.component';
 
 @Component({
   selector: 'app-admin',

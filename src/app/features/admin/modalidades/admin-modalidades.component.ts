@@ -7,7 +7,7 @@ import {
   FormGroup,
   Validators,
 } from '@angular/forms';
-import { AdminService, Gestion, Modalidad } from '../../core/services/admin.service';
+import { AdminService, Gestion, Modalidad } from '../../../core/services/admin.service';
 
 @Component({
   selector: 'app-admin-modalidades',

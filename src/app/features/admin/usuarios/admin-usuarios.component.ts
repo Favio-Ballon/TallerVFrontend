@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { Usuario } from '../../core/services/admin.service';
+import { Usuario } from '../../../core/services/admin.service';
 
 @Component({
   selector: 'app-admin-usuarios',

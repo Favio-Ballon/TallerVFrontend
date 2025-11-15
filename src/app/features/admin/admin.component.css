@@ -10,7 +10,7 @@
 }
 
 /* On very small screens let buttons be full width (the template adds w-full on small sizes) */
-@media (max-width: 420px) {
+@media (max-width: 640px) {
 	.admin-root nav .flex > button {
 		min-width: 0;
 		width: 100%;
@@ -18,6 +18,56 @@
   .hide-tag{
     display: none;
   }
+}
+
+/* Make header compact and keep logout button to the right on very small screens */
+@media (max-width: 640px) {
+	/* Ensure the header inner container uses a single row */
+	header .max-w-7xl {
+		display: flex !important;
+		flex-direction: row !important;
+		align-items: center !important;
+		justify-content: space-between !important;
+		gap: 0.5rem !important;
+		padding-top: 0.5rem !important;
+		padding-bottom: 0.5rem !important;
+	}
+
+	/* Reduce logo size so it doesn't push content */
+	header img {
+		width: 40px !important;
+		height: auto !important;
+	}
+
+	/* Slightly smaller title and tighter spacing */
+	header .ml-2 h1 {
+		font-size: 1.125rem !important; /* ~18px */
+		line-height: 1.1 !important;
+		margin: 0 !important;
+	}
+
+	/* Make the subtitle remain hidden on small screens (already hidden via sm:block but be safe) */
+	header .ml-2 p {
+		display: none !important;
+	}
+
+	/* Compact the logout button: smaller padding and icon-only feel */
+	header button[title="Cerrar sesión"] {
+		padding: 0.35rem 0.5rem !important;
+		border-radius: 0.5rem !important;
+		min-width: 36px !important;
+	}
+
+	/* Reduce the svg size inside the logout button so the red rounded square is small */
+	header button[title="Cerrar sesión"] svg {
+		width: 1rem !important;
+		height: 1rem !important;
+	}
+
+	/* Ensure the admin badge stays small and doesn't force a new row */
+	header .inline-flex.items-center {
+		padding: 0.2rem 0.5rem !important;
+	}
 }
 
 /* Tighten header spacing on small screens */
