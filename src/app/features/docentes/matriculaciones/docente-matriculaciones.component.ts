@@ -7,10 +7,10 @@ import {
   FormGroup,
   Validators,
 } from '@angular/forms';
-import { DocenteService, Matriculacion } from '../../core/services/docente.service';
-import { SemestreMateria, Usuario, Materia } from '../../core/services/admin.service';
-import { AdminService } from '../../core/services/admin.service';
-import { ToastService } from '../../shared/toast/toast.service';
+import { DocenteService, Matriculacion } from '../../../core/services/docente.service';
+import { SemestreMateria, Usuario } from '../../../core/services/admin.service';
+import { AdminService } from '../../../core/services/admin.service';
+import { ToastService } from '../../../shared/toast/toast.service';
 
 @Component({
   selector: 'app-docente-matriculaciones',
@@ -23,6 +23,8 @@ export class DocenteMatriculacionesComponent implements OnInit {
   lista: Matriculacion[] = [];
   alumnos: Usuario[] = [];
   semestreMaterias: SemestreMateria[] = [];
+  enrolled: Matriculacion[] = [];
+  selectedCourseId: number | null = null;
 
   form: FormGroup;
   loading = false;
@@ -43,6 +45,29 @@ export class DocenteMatriculacionesComponent implements OnInit {
     this.loadAll();
   }
 
+  onSemestreMateriaChange(val: any) {
+    const id = Number(val);
+    if (id) this.loadEnrolled(id);
+    else this.enrolled = [];
+  }
+
+  onCourseSelect(val: any) {
+    const id = Number(val);
+    this.selectedCourseId = id || null;
+    if (id) this.loadEnrolled(id);
+    else this.enrolled = [];
+  }
+
+  loadEnrolled(semestreMateriaId: number) {
+    this.docente.getMatriculacionesBySemestreMateria(semestreMateriaId).subscribe({
+      next: (r) => (this.enrolled = r),
+      error: (e) => {
+        console.error('Error cargando matriculaciones por curso', e);
+        this.toast.error('Error al cargar estudiantes inscriptos');
+      },
+    });
+  }
+
   loadAll() {
     this.docente
       .getMatriculaciones()
@@ -53,14 +78,11 @@ export class DocenteMatriculacionesComponent implements OnInit {
     this.docente.getSemestreMaterias().subscribe({
       next: (s) => {
         this.semestreMaterias = s;
-        console.log('debug: semestreMaterias loaded', s);
         if (!s || s.length === 0) {
           this.toast.success('No hay materias disponibles para inscribir');
-          // fallback: cargar materias simples si el backend no devuelve semestre-materias
           this.adminService.getMaterias().subscribe({
             next: (m) => {
               if (m && m.length > 0) {
-                // map Materia -> SemestreMateria minimal para permitir selección
                 this.semestreMaterias = m.map(
                   (mat) =>
                     ({
@@ -127,6 +149,7 @@ export class DocenteMatriculacionesComponent implements OnInit {
       next: () => {
         this.toast.success('Matriculación eliminada');
         this.loadAll();
+        if (this.selectedCourseId) this.loadEnrolled(this.selectedCourseId);
       },
       error: (e) => {
         console.error(e);

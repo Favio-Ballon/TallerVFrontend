@@ -40,14 +40,61 @@ export class DocenteService {
     return this.http.get<Matriculacion[]>(`${this.apiBase}/matriculacion/`);
   }
 
+  /** Obtener matriculaciones por semestre-materia (alumnos inscriptos en un curso) */
+  getMatriculacionesBySemestreMateria(semestreMateriaId: number): Observable<Matriculacion[]> {
+    return this.http.get<Matriculacion[]>(
+      `${this.apiBase}/matriculacion/semestre-materia/${semestreMateriaId}`
+    );
+  }
+
   // Semestre-Materia (needed by docentes UI)
+  /**
+   * Obtener las semestre-materias asociadas al docente (endpoint específico del backend).
+   * El backend expone `/semestre-materia/docente/materias` que devuelve las asignaciones
+   * (incluye la propiedad `estaActivo` y los objetos anidados materia/semestre/docente).
+   */
   getSemestreMaterias(): Observable<SemestreMateria[]> {
-    return this.http.get<SemestreMateria[]>(`${this.apiBase}/semestre-materia/`);
+    return this.http.get<SemestreMateria[]>(`${this.apiBase}/semestre-materia/docente/materias`);
   }
 
   // Usuarios filtered by rol (reuse auth/usuarios endpoint)
   getUsuarios(filter?: { rol?: string }): Observable<Usuario[]> {
     const body = filter ? filter : {};
     return this.http.post<Usuario[]>(`${this.apiBase}/auth/usuarios`, body);
+  }
+
+  /** Subir faltas para una matriculacion (nuevoValor puede ser el incremento o el valor a aplicar segun backend)
+   *  Nota: usar PATCH según la API.
+   */
+  subirFaltas(matriculacionId: number, nuevoValor: number): Observable<string> {
+    // The backend returns a plain text message (not JSON). Request the response as text
+    // to avoid HttpClient JSON parsing errors.
+    const url = `${this.apiBase}/matriculacion/subir-faltas/${matriculacionId}`;
+    return this.http.patch<string>(url, { nuevoValor }, { responseType: 'text' as 'json' });
+  }
+
+  /** Obtener notas por matriculacion */
+  getNotasByMatriculacion(matriculacionId: number): Observable<
+    {
+      id: number;
+      evaluacion: string;
+      ponderacion: number;
+      calificacion: number;
+    }[]
+  > {
+    return this.http.get<
+      {
+        id: number;
+        evaluacion: string;
+        ponderacion: number;
+        calificacion: number;
+      }[]
+    >(`${this.apiBase}/nota/matriculacion/${matriculacionId}`);
+  }
+
+  /** Subir calificacion para una nota (PATCH) - backend devuelve texto */
+  subirCalificacion(notaId: number, nuevoValor: number): Observable<string> {
+    const url = `${this.apiBase}/nota/${notaId}/subir-calificacion`;
+    return this.http.patch<string>(url, { nuevoValor }, { responseType: 'text' as 'json' });
   }
 }

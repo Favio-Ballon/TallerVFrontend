@@ -1,0 +1,19 @@
+<div class="bg-white/90 p-4 rounded-xl border border-white/20 shadow-sm mb-6">
+  <nav class="flex gap-4 items-center">
+  <a routerLink="/docentes/matriculaciones" routerLinkActive="font-semibold text-blue-600" class="px-3 py-2 rounded hover:bg-gray-100">Matriculaciones</a>
+  <a routerLink="/docentes/faltas" routerLinkActive="font-semibold text-blue-600" class="px-3 py-2 rounded hover:bg-gray-100">Faltas</a>
+  <a routerLink="/docentes/notas" routerLinkActive="font-semibold text-blue-600" class="px-3 py-2 rounded hover:bg-gray-100">Notas</a>
+    <div class="ml-auto flex items-center gap-3">
+      <span class="text-sm text-gray-500">Área docente</span>
+      <button
+        class="ml-4 bg-white text-blue-600 px-3 py-1 rounded hover:opacity-90"
+        (click)="logout()"
+        title="Cerrar sesión"
+      >
+        Cerrar sesión
+      </button>
+    </div>
+  </nav>
+</div>
+
+<router-outlet></router-outlet>

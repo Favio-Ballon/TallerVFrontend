@@ -1,0 +1,73 @@
+<div class="bg-white/90 p-6 rounded-2xl border border-white/30 shadow-md">
+  <h2 class="text-lg font-semibold mb-4">Matriculaciones (Inscribir alumnos)</h2>
+
+  <form (ngSubmit)="submit()" [formGroup]="form" class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+    <div>
+      <label class="block text-sm font-medium mb-1">Alumno</label>
+      <select formControlName="alumnoId" class="w-full px-3 py-2 rounded-md border">
+        <option value="">-- seleccionar --</option>
+        <option *ngFor="let a of alumnos" [value]="a.id">{{ a.nombre }} {{ a.apellido }}</option>
+      </select>
+    </div>
+
+    <div>
+      <label class="block text-sm font-medium mb-1">Semestre - Materia</label>
+      <select formControlName="semestreMateriaId" class="w-full px-3 py-2 rounded-md border">
+        <option value="">-- seleccionar --</option>
+        <option *ngFor="let s of semestreMaterias" [value]="s.id">{{ s.materia.nombre }} — {{ s.semestre.nombre }} ({{ s.docente.nombre }} {{ s.docente.apellido }})</option>
+      </select>
+    </div>
+
+    <div class="flex items-end">
+      <button type="submit" [disabled]="loading" class="ml-auto bg-blue-600 text-white px-4 py-2 rounded-lg font-semibold">
+        {{ loading ? 'Guardando...' : 'Matricular' }}
+      </button>
+    </div>
+  </form>
+
+  <!-- Sección independiente: Ver estudiantes por curso -->
+  <div class="bg-white/90 p-6 rounded-2xl border border-white/30 shadow-md mt-6">
+    <h3 class="font-medium mb-3">Ver estudiantes matriculados por curso</h3>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+      <div>
+        <label class="block text-sm font-medium mb-1">Curso (Semestre - Materia)</label>
+        <select class="w-full px-3 py-2 rounded-md border" (change)="onCourseSelect($any($event.target).value)">
+          <option value="">-- seleccionar curso --</option>
+          <option *ngFor="let s of semestreMaterias" [value]="s.id">{{ s.materia.nombre }} — {{ s.semestre.nombre }} ({{ s.docente.nombre }} {{ s.docente.apellido }})</option>
+        </select>
+      </div>
+    </div>
+
+    <div *ngIf="enrolled && enrolled.length > 0">
+      <div class="overflow-auto">
+        <table class="w-full text-sm">
+          <thead>
+            <tr class="text-left text-gray-600">
+              <th class="py-2">ID</th>
+              <th>Alumno</th>
+              <th>Faltas</th>
+              <th>Nota</th>
+              <th>Acciones</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let e of enrolled" class="border-t">
+              <td class="py-2">{{ e.id }}</td>
+              <td>{{ e.alumno.nombre }} {{ e.alumno.apellido }}</td>
+              <td class="py-2">{{ e.faltas }}</td>
+              <td>{{ e.notaFinal }}</td>
+              <td>
+                <div class="flex gap-2">
+                  <button class="bg-red-500 text-white px-2 py-1 rounded" (click)="remove(e.id)">Eliminar</button>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div *ngIf="!enrolled || enrolled.length === 0" class="text-gray-500">No hay estudiantes inscriptos para el curso seleccionado.</div>
+  </div>
+
+
+</div>

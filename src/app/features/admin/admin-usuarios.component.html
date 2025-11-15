@@ -103,9 +103,9 @@
             'w-full px-4 py-3 border-2 border-red-400 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 transition' :
             'w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition'"
         >
-          <option value="estudiante">Estudiante</option>
-          <option value="docente">Docente</option>
-          <option value="admin">Administrador</option>
+          <option value="Estudiante">Estudiante</option>
+          <option value="Docente">Docente</option>
+          <option value="Administrador">Administrador</option>
         </select>
       </div>
     </div>
@@ -128,9 +128,9 @@
         <label class="text-sm text-gray-700">Filtrar por rol:</label>
         <select class="px-3 py-2 rounded-lg border" [(ngModel)]="selectedRole">
           <option value="">Todos</option>
-          <option value="admin">admin</option>
-          <option value="estudiante">estudiante</option>
-          <option value="docente">docente</option>
+          <option value="Administrador">Administrador</option>
+          <option value="Estudiante">Estudiante</option>
+          <option value="Docente">Docente</option>
         </select>
   <button (click)="refreshUsuarios.emit(selectedRole ? selectedRole : undefined)" class="bg-blue-500 hover:bg-blue-600 text-white px-3 py-2 rounded-lg">Actualizar</button>
       </div>
