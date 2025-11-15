@@ -40,6 +40,11 @@ export class DocenteService {
     return this.http.get<Matriculacion[]>(`${this.apiBase}/matriculacion/`);
   }
 
+  /** Obtener matriculaciones del alumno actual (endpoint expuesto por el backend) */
+  getMatriculacionesByAlumno(): Observable<Matriculacion[]> {
+    return this.http.get<Matriculacion[]>(`${this.apiBase}/matriculacion/alumno`);
+  }
+
   /** Obtener matriculaciones por semestre-materia (alumnos inscriptos en un curso) */
   getMatriculacionesBySemestreMateria(semestreMateriaId: number): Observable<Matriculacion[]> {
     return this.http.get<Matriculacion[]>(

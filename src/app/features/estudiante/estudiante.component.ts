@@ -4,13 +4,13 @@ import { RouterModule, Router } from '@angular/router';
 import { AuthService } from '../../core/auth/auth.service';
 
 @Component({
-  selector: 'app-docente',
+  selector: 'app-estudiante',
   standalone: true,
   imports: [CommonModule, RouterModule],
-  templateUrl: './docente.component.html',
-  styleUrls: ['./docente.component.css'],
+  templateUrl: './estudiante.component.html',
+  styleUrls: ['./estudiante.component.css'],
 })
-export class DocenteComponent {
+export class EstudianteComponent {
   isNavOpen = false;
 
   constructor(private auth: AuthService, private router: Router) {}
@@ -28,6 +28,6 @@ export class DocenteComponent {
     if (url.includes('matricul')) return 'Matriculaciones';
     if (url.includes('faltas')) return 'Faltas';
     if (url.includes('notas')) return 'Notas';
-    return 'Área docente';
+    return 'Área estudiante';
   }
 }

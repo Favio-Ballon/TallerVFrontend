@@ -1,19 +1,70 @@
-<div class="bg-white/90 p-4 rounded-xl border border-white/20 shadow-sm mb-6">
-  <nav class="flex gap-4 items-center">
-  <a routerLink="/docentes/matriculaciones" routerLinkActive="font-semibold text-blue-600" class="px-3 py-2 rounded hover:bg-gray-100">Matriculaciones</a>
-  <a routerLink="/docentes/faltas" routerLinkActive="font-semibold text-blue-600" class="px-3 py-2 rounded hover:bg-gray-100">Faltas</a>
-  <a routerLink="/docentes/notas" routerLinkActive="font-semibold text-blue-600" class="px-3 py-2 rounded hover:bg-gray-100">Notas</a>
-    <div class="ml-auto flex items-center gap-3">
-      <span class="text-sm text-gray-500">Área docente</span>
-      <button
-        class="ml-4 bg-white text-blue-600 px-3 py-1 rounded hover:opacity-90"
-        (click)="logout()"
-        title="Cerrar sesión"
-      >
-        Cerrar sesión
-      </button>
-    </div>
-  </nav>
-</div>
+<div class="min-h-screen bg-gradient-to-br from-blue-900 via-blue-600 to-blue-400 admin-root">
+  <header class="sticky top-0 z-50 bg-white/90 backdrop-blur-lg border-b border-white/20 shadow-lg">
+    <div class="max-w-7xl mx-auto px-6 py-3 flex flex-col sm:flex-row sm:justify-between items-center gap-3">
+      <div class="flex items-center gap-4">
+        <img src="https://notas2.nur.edu/Docentes/assets/images/nur.png" alt="Logo NUR" class="w-12 h-auto drop-shadow-md" />
+        <div class="ml-2">
+          <h1 class="text-xl font-bold bg-gradient-to-r from-blue-700 to-blue-600 bg-clip-text text-transparent">Panel Docente</h1>
+          <p class="text-sm text-gray-500 mt-0.5 hidden sm:block">Área docente — matriculaciones, faltas y notas</p>
+        </div>
+      </div>
 
-<router-outlet></router-outlet>
+      <div class="flex items-center gap-3">
+        <div class="hidden sm:inline-flex items-center bg-white/90 text-gray-700 px-3 py-1 rounded-full shadow-sm">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2 text-blue-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 11c1.657 0 3-1.343 3-3S13.657 5 12 5s-3 1.343-3 3 1.343 3 3 3z"/><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/></svg>
+          <span class="text-sm font-medium">Docente</span>
+        </div>
+
+        <button
+          (click)="logout()"
+          aria-label="Cerrar sesión"
+          title="Cerrar sesión"
+          class="flex items-center gap-2 bg-gradient-to-r from-red-500 to-red-600 text-white p-2 rounded-full font-semibold hover:scale-105 hover:shadow-lg transition-all duration-200">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+            <polyline points="16 17 21 12 16 7"></polyline>
+            <line x1="21" y1="12" x2="9" y2="12"></line>
+          </svg>
+          <span class="hidden sm:inline">Salir</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <div class="max-w-7xl mx-auto px-6 py-6">
+    <nav class="mb-6">
+      <div class="bg-white/20 backdrop-blur-md rounded-2xl p-2 border border-white/30 shadow-2xl">
+        <div class="flex items-center justify-between header-ocultar px-2">
+          <div class="text-sm font-semibold text-white/90 hide-tag">{{ getActiveTabLabel() }}</div>
+          <button (click)="toggleNav()" aria-expanded="{{isNavOpen}}" class="p-2 rounded-md bg-white/10">
+            <svg *ngIf="!isNavOpen" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-white" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 10.94l3.71-3.71a.75.75 0 111.06 1.06l-4.24 4.24a.75.75 0 01-1.06 0L5.21 8.29a.75.75 0 01.02-1.08z" clip-rule="evenodd" /></svg>
+            <svg *ngIf="isNavOpen" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-white" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M14.77 12.79a.75.75 0 01-1.06-.02L10 9.06l-3.71 3.71a.75.75 0 11-1.06-1.06l4.24-4.24a.75.75 0 011.06 0l4.24 4.24a.75.75 0 01-.02 1.06z" clip-rule="evenodd" /></svg>
+          </button>
+        </div>
+
+        <ul class="hidden sm:flex flex-col sm:flex-row gap-2 w-full list-none p-0 m-0" [ngClass]="{'block': isNavOpen}">
+          <li class="w-full sm:w-auto">
+            <a routerLink="/docentes/matriculaciones" routerLinkActive="active-classes" #rla1="routerLinkActive" [ngClass]="{
+    'text-white/80 hover:text-white hover:bg-white/10': !rla1.isActive,
+    'bg-white/90 text-blue-800 shadow-lg scale-105': rla1.isActive
+  }" class="text-white/80 hover:text-white hover:bg-white/10 w-full sm:flex-1 flex items-center justify-start sm:justify-center gap-3 px-6 py-4 rounded-xl font-semibold transition-all duration-300 text-left sm:text-center">Matriculaciones</a>
+          </li>
+          <li class="w-full sm:w-auto">
+            <a routerLink="/docentes/faltas" routerLinkActive="active-classes" #rla2="routerLinkActive" [ngClass]="{
+    'text-white/80 hover:text-white hover:bg-white/10': !rla2.isActive,
+    'bg-white/90 text-blue-800 shadow-lg scale-105': rla2.isActive
+  }" class="text-white/80 hover:text-white hover:bg-white/10 w-full sm:flex-1 flex items-center justify-start sm:justify-center gap-3 px-6 py-4 rounded-xl font-semibold transition-all duration-300 text-left sm:text-center">Faltas</a>
+          </li>
+          <li class="w-full sm:w-auto">
+            <a routerLink="/docentes/notas" routerLinkActive="active-classes" #rla3="routerLinkActive" [ngClass]="{
+    'text-white/80 hover:text-white hover:bg-white/10': !rla3.isActive,
+    'bg-white/90 text-blue-800 shadow-lg scale-105': rla3.isActive
+  }" class="text-white/80 hover:text-white hover:bg-white/10 w-full sm:flex-1 flex items-center justify-start sm:justify-center gap-3 px-6 py-4 rounded-xl font-semibold transition-all duration-300 text-left sm:text-center">Notas</a>
+          </li>
+        </ul>
+      </div>
+    </nav>
+
+    <router-outlet></router-outlet>
+  </div>
+</div>

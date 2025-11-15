@@ -7,6 +7,9 @@ import { docenteGuard } from './core/auth/docente.guard';
 import { DocenteMatriculacionesComponent } from './features/docentes/matriculaciones/docente-matriculaciones.component';
 import { DocenteFaltasComponent } from './features/docentes/faltas/docente-faltas.component';
 import { DocenteComponent } from './features/docentes/docente.component';
+import { EstudianteComponent } from './features/estudiante/estudiante.component';
+import { EstudianteFaltasComponent } from './features/estudiante/faltas/estudiante-faltas.component';
+import { EstudianteNotasComponent } from './features/estudiante/notas/estudiante-notas.component';
 
 export const routes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' },
@@ -28,6 +31,23 @@ export const routes: Routes = [
             (m) => m.DocenteNotasComponent
           ),
       },
+    ],
+  },
+  {
+    path: 'estudiante',
+    component: EstudianteComponent,
+    canActivate: [authGuard],
+    children: [
+      { path: '', redirectTo: 'matriculaciones', pathMatch: 'full' },
+      {
+        path: 'matriculaciones',
+        loadComponent: () =>
+          import('./features/estudiante/notas/estudiante-notas.component').then(
+            (m) => m.EstudianteNotasComponent
+          ),
+      },
+      { path: 'faltas', component: EstudianteFaltasComponent },
+      { path: 'notas', component: EstudianteNotasComponent },
     ],
   },
 ];

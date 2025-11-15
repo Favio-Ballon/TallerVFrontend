@@ -1,0 +1,50 @@
+<div class="bg-white/90 p-6 rounded-2xl border border-white/30 shadow-md">
+  <div class="flex items-center justify-between mb-4">
+    <h2 class="text-2xl font-semibold">Notas</h2>
+  </div>
+
+  <div *ngIf="loading" class="text-gray-500">Cargando matriculaciones...</div>
+
+  <div *ngIf="!loading && matriculaciones.length === 0" class="text-gray-500">No hay materias inscriptas.</div>
+
+  <div *ngIf="matriculaciones.length > 0" class="overflow-auto">
+    <table class="w-full text-sm">
+      <thead>
+        <tr class="text-left text-gray-600">
+          <th class="py-2">CODIGO</th>
+          <th>MATERIA</th>
+          <th>DOCENTE</th>
+          <th class="text-center">N. FINAL</th>
+          <th class="text-center">Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let m of matriculaciones" class="border-t">
+          <td class="py-3">{{ m.materia.id || m.semestreMateriaId || '-' }}</td>
+          <td class="py-3">{{ m.materia.nombre }}</td>
+          <td class="py-3">{{ m.docente.apellido }}, {{ m.docente.nombre }}</td>
+          <td class="py-3 text-center">{{ m.notaFinal || 0 }}</td>
+          <td class="py-3 text-center">
+            <button (click)="showNotas(m.id)" class="bg-blue-600 text-white px-3 py-1 rounded">Ver notas</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div *ngIf="selectedNotas" class="mt-6 bg-gray-50 p-4 rounded">
+    <div class="flex items-center justify-between mb-2">
+      <h3 class="font-semibold">Detalle de notas (Matriculación {{ selectedNotas.id }})</h3>
+      <button (click)="closeNotas()" class="text-sm text-gray-600">Cerrar</button>
+    </div>
+    <ul class="space-y-2">
+      <li *ngFor="let n of selectedNotas.notas" class="flex justify-between bg-white p-2 rounded">
+        <div>
+          <div class="font-medium">{{ n.evaluacion }}</div>
+          <div class="text-xs text-gray-500">Peso: {{ n.ponderacion }}%</div>
+        </div>
+        <div class="text-lg font-semibold">{{ n.calificacion }}</div>
+      </li>
+    </ul>
+  </div>
+</div>
