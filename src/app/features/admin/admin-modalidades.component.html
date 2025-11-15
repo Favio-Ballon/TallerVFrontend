@@ -38,14 +38,14 @@
         <div class="font-medium">Gestión {{ g.ano }}</div>
       </div>
       <div *ngIf="g.modalidades && g.modalidades.length > 0" class="space-y-2">
-        <div *ngFor="let m of g.modalidades" class="p-3 bg-white rounded border flex items-center justify-between">
-          <div>
-            <div class="font-semibold">{{ m.nombre }}</div>
+        <div *ngFor="let m of g.modalidades" class="p-3 bg-white rounded border flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+          <div class="flex-1 min-w-0">
+            <div class="font-semibold break-words">{{ m.nombre }}</div>
             <div class="text-sm text-gray-600">Faltas: {{ m.faltasPermitidas }}</div>
           </div>
-          <div class="flex gap-2">
-            <button (click)="editById(m.id!)" class="px-3 py-1 bg-yellow-400 rounded">Editar</button>
-            <button (click)="delete(m.id!)" class="px-3 py-1 bg-red-500 text-white rounded">Eliminar</button>
+          <div class="flex gap-2 flex-shrink-0">
+            <button (click)="editById(m.id!)" class="px-3 py-1 bg-yellow-400 rounded whitespace-nowrap">Editar</button>
+            <button (click)="delete(m.id!)" class="px-3 py-1 bg-red-500 text-white rounded whitespace-nowrap">Eliminar</button>
           </div>
         </div>
       </div>

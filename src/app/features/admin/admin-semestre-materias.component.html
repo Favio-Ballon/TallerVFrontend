@@ -73,14 +73,14 @@
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let it of lista">
-          <td>{{ it.materia.nombre }}</td>
-          <td>{{ it.semestre.nombre }}</td>
-          <td>{{ it.docente.nombre }} {{ it.docente.apellido }}</td>
-          <td>{{ it.modalidad.nombre }}</td>
-          <td>{{ it.cupos }}</td>
-          <td>{{ isActive(it) ? 'Sí' : 'No' }}</td>
-          <td class="admin-actions-cell">
+        <tr *ngFor="let it of lista" class="sem-materia-row">
+          <td data-label="Materia">{{ it.materia.nombre }}</td>
+          <td data-label="Semestre">{{ it.semestre.nombre }}</td>
+          <td data-label="Docente">{{ it.docente.nombre }} {{ it.docente.apellido }}</td>
+          <td data-label="Modalidad">{{ it.modalidad.nombre }}</td>
+          <td data-label="Cupos">{{ it.cupos }}</td>
+          <td data-label="Activo">{{ isActive(it) ? 'Sí' : 'No' }}</td>
+          <td data-label="Acciones" class="admin-actions-cell">
             <button class="px-3 py-1 bg-yellow-400 rounded" (click)="edit(it)">Editar</button>
             <button class="px-3 py-1 bg-red-500 text-white rounded" (click)="remove(it.id)">Eliminar</button>
             <button class="px-3 py-1 bg-gray-700 text-white rounded" (click)="cerrar(it.id)">Cerrar</button>

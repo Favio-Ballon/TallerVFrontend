@@ -18,6 +18,12 @@ export class AdminUsuariosComponent {
   // Emitimos el rol seleccionado (p. ej. 'admin', 'estudiante', 'docente') o undefined para todos
   @Output() refreshUsuarios = new EventEmitter<string | undefined>();
 
-  // Valor local del selector de rol
-  selectedRole: string | undefined = 'estudiante';
+  // Valor local del selector de rol (por defecto mostrar Todos)
+  selectedRole: string | undefined = '';
+
+  onRoleChange(role: string | undefined) {
+    // Actualizamos el valor local y emitimos para que el padre recargue la lista
+    this.selectedRole = role;
+    this.refreshUsuarios.emit(role ? role : undefined);
+  }
 }

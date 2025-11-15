@@ -4,8 +4,10 @@
 */
 
 .admin-section {
-  padding: 1.25rem;
+  padding: 0;
   color: #07203a;
+  display: flex;
+  justify-content: center;
 }
 
 .admin-card {
@@ -15,6 +17,29 @@
   box-shadow: 0 25px 50px -12px rgba(0,0,0,0.25); /* shadow-2xl */
   border: 1px solid rgba(255,255,255,0.30);
   backdrop-filter: blur(8px);
+}
+
+/* On wide screens, center and make the white card wider so it uses more horizontal space */
+@media (min-width: 851px) {
+  .admin-section {
+    display: flex;
+    justify-content: center;
+  }
+
+  /* target the inner wrapper (first child) to expand it while keeping rounded card look */
+  .admin-section > div {
+    width: min(90vw, 1100px);
+    max-width: 1100px; /* increased width on desktop; uses 90% on intermediate screens */
+    padding-left: 3rem;
+    padding-right: 3rem;
+    box-sizing: border-box;
+  }
+
+  /* make table cells have comfortable padding on desktop */
+  .admin-section th,
+  .admin-section td {
+    padding: 1rem 1rem;
+  }
 }
 
 .admin-form-row {
@@ -90,16 +115,100 @@
   text-align: left;
 }
 
-.admin-actions-cell button {
-  margin-right: 0.6rem;
+.admin-actions-cell {
+  display: flex;
+  gap: 0.6rem;
+  justify-content: center; /* center actions horizontally by default */
+  align-items: center;
+  flex-wrap: wrap; /* allow buttons to wrap to next line when needed */
 }
 
-/* responsive tweaks */
-@media (max-width: 800px) {
-  .admin-section table, .admin-section thead, .admin-section tbody, .admin-section th, .admin-section td, .admin-section tr {
+.admin-actions-cell button {
+  margin: 0; /* spacing handled by gap */
+  padding: 0.45rem 0.9rem; /* slightly smaller buttons */
+  font-size: 0.95rem;
+  border-radius: 0.6rem;
+}
+
+/* responsive tweaks: mobile = <= 850px -> transform table into stacked cards */
+@media (max-width: 850px) {
+  .admin-section table,
+  .admin-section thead,
+  .admin-section tbody,
+  .admin-section th,
+  .admin-section td,
+  .admin-section tr {
     display: block;
   }
+
   .admin-section thead {
     display: none;
+  }
+
+  /* make each row a card */
+  .admin-section tbody tr.sem-materia-row {
+    background: #ffffff;
+    border-radius: 0.5rem;
+    padding: 0.75rem;
+    margin-bottom: 0.75rem;
+    box-shadow: 0 6px 18px rgba(2,6,23,0.06);
+    border: 1px solid rgba(0,0,0,0.04);
+  }
+
+  /* make the white card narrower on mobile but centered (90vw width of viewport) */
+  .admin-section > div {
+    width: 90vw;
+    margin: 0 auto;
+    padding-left: 1rem;
+    padding-right: 1rem;
+    box-sizing: border-box;
+  }
+
+  .admin-section td {
+    padding: 0.5rem 0;
+    border: none;
+    display: flex;
+    align-items: flex-start;
+    gap: 0.5rem;
+    box-sizing: border-box;
+  }
+
+  /* show labels using data-label attribute: fixed column on the left */
+  .admin-section td::before {
+    content: attr(data-label);
+    font-weight: 700;
+    color: #334155; /* gray-700 */
+    flex: 0 0 36%;
+    max-width: 36%;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    padding-right: 0.25rem;
+    margin-top: 0.15rem;
+  }
+
+  /* value area: remaining space */
+  .admin-section td > *:not(:first-child),
+  .admin-section td { /* fallback: allow text node to wrap */
+    flex: 1 1 auto;
+  }
+
+  /* actions: allow wrapping and keep centered on mobile; if not enough space buttons will wrap */
+  .admin-actions-cell {
+    display: flex;
+    flex-direction: row;
+    gap: 0.5rem;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    margin-top: 0.5rem;
+  }
+
+  .admin-actions-cell button {
+    white-space: nowrap;
+    min-width: 82px; /* smaller, consistent button width for mobile */
+    padding: 0.45rem 0.9rem;
+    text-align: center;
+    font-size: 0.95rem;
   }
 }

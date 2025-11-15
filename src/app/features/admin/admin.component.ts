@@ -180,7 +180,7 @@ export class AdminComponent implements OnInit {
     }
   }
 
-  loadUsuarios(role: string | undefined = 'estudiante') {
+  loadUsuarios(role: string | undefined = undefined) {
     this.loadingUsuarios = true;
 
     // Si role es undefined (o vacio) pedimos todo, si no pedimos por rol

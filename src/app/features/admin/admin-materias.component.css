@@ -1,1 +1,57 @@
-/* Minimal styles for admin materias component */
+/* Responsive rules for Materias list
+	 Behavior:
+	 - <= 850px: stack content vertically (title + meta above, actions below)
+	 - >= 851px: display as row with content left and actions right, vertically centered
+	 We use utility-like classes but enforce the breakpoint here to avoid Tailwind conflicts.
+*/
+
+.materia-item {
+	display: flex;
+	flex-direction: column;
+	gap: 0.75rem; /* matches gap-3 */
+	align-items: stretch;
+}
+
+.materia-content {
+	/* allow truncation and flexible shrink/grow */
+	flex: 1 1 auto;
+	min-width: 0; /* allow children to truncate */
+}
+
+.materia-actions {
+	display: flex;
+	gap: 0.5rem;
+	justify-content: flex-end;
+	flex-shrink: 0;
+}
+
+/* Buttons shouldn't wrap their text */
+.materia-actions .whitespace-nowrap {
+	white-space: nowrap;
+}
+
+/* Desktop layout (>=851px) -> row */
+@media (min-width: 851px) {
+	.materia-item {
+		flex-direction: row;
+		align-items: center;
+	}
+
+	.materia-content {
+		margin-right: 1rem;
+	}
+
+	/* Make sure the actions sit to the right and don't shrink */
+	.materia-actions {
+		justify-content: flex-end;
+	}
+}
+
+/* Small tweak: visually separate items on very small screens */
+@media (max-width: 400px) {
+	.materia-item {
+		padding-left: 0.75rem;
+		padding-right: 0.75rem;
+	}
+}
+

@@ -15,6 +15,9 @@
 		min-width: 0;
 		width: 100%;
 	}
+  .hide-tag{
+    display: none;
+  }
 }
 
 /* Tighten header spacing on small screens */
