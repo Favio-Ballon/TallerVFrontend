@@ -118,7 +118,16 @@ export class AdminComponent implements OnInit {
     this.isNavOpen = !this.isNavOpen;
   }
 
-  selectTab(tab: 'usuarios' | 'gestiones' | 'semestres' | 'modalidades' | 'materias' | 'evaluaciones' | 'semestreMaterias') {
+  selectTab(
+    tab:
+      | 'usuarios'
+      | 'gestiones'
+      | 'semestres'
+      | 'modalidades'
+      | 'materias'
+      | 'evaluaciones'
+      | 'semestreMaterias'
+  ) {
     this.setActiveTab(tab);
     // close mobile nav after selecting
     this.isNavOpen = false;
@@ -126,14 +135,22 @@ export class AdminComponent implements OnInit {
 
   getActiveTabLabel() {
     switch (this.activeTab) {
-      case 'usuarios': return 'Usuarios';
-      case 'gestiones': return 'Gestiones';
-      case 'semestres': return 'Semestres';
-      case 'modalidades': return 'Modalidades';
-      case 'materias': return 'Materias';
-      case 'evaluaciones': return 'Evaluaciones';
-      case 'semestreMaterias': return 'Semestre-Materias';
-      default: return '';
+      case 'usuarios':
+        return 'Usuarios';
+      case 'gestiones':
+        return 'Gestiones';
+      case 'semestres':
+        return 'Semestres';
+      case 'modalidades':
+        return 'Modalidades';
+      case 'materias':
+        return 'Materias';
+      case 'evaluaciones':
+        return 'Evaluaciones';
+      case 'semestreMaterias':
+        return 'Semestre-Materias';
+      default:
+        return '';
     }
   }
 
