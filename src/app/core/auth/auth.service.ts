@@ -34,6 +34,11 @@ export class AuthService {
       );
   }
 
+  /** Obtener información del usuario autenticado desde el backend */
+  me(): Observable<{ authorities: string[]; name?: string }> {
+    return this.http.get<{ authorities: string[]; name?: string }>('http://localhost:8080/auth/me');
+  }
+
   logout() {
     this.clearTokens();
     this.isAuthenticated.set(false);

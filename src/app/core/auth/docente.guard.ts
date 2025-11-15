@@ -56,23 +56,38 @@ export const docenteGuard: CanActivateFn = (route, state) => {
   const router = inject(Router);
   const accessToken = auth.getAccessToken();
   const refreshToken = auth.getRefreshToken();
-
-  if (accessToken && !isTokenExpired(accessToken)) {
-    if (hasDocenteRole(accessToken)) return true;
-    // authenticated but not docente
-    router.navigate(['/protected']);
-    return false;
-  } else if (refreshToken) {
-    return auth.refreshToken().pipe(
-      switchMap(() => {
-        const newAccess = auth.getAccessToken();
-        if (newAccess && !isTokenExpired(newAccess) && hasDocenteRole(newAccess)) {
-          return of(true);
+  const checkProfile = () =>
+    auth.me().pipe(
+      // map to boolean allow/deny
+      switchMap((p: any) => {
+        const auths: string[] = p?.authorities || [];
+        for (const a of auths) {
+          if (typeof a === 'string' && a.toLowerCase().includes('docente')) return of(true);
+        }
+        // not a docente: redirect to the primary area the user belongs to
+        const joined = auths.join(' ').toLowerCase();
+        if (joined.includes('admin')) {
+          router.navigate(['/admin']);
+        } else if (joined.includes('docente')) {
+          router.navigate(['/docentes']);
+        } else if (joined.includes('estudiante')) {
+          router.navigate(['/estudiante/notas']);
         } else {
           router.navigate(['/login']);
-          return of(false);
         }
+        return of(false);
       }),
+      catchError(() => {
+        router.navigate(['/login']);
+        return of(false);
+      })
+    );
+
+  if (accessToken && !isTokenExpired(accessToken)) {
+    return checkProfile();
+  } else if (refreshToken) {
+    return auth.refreshToken().pipe(
+      switchMap(() => checkProfile()),
       catchError(() => {
         router.navigate(['/login']);
         return of(false);

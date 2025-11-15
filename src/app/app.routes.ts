@@ -4,18 +4,21 @@ import { ProtectedComponent } from './features/protected/protected.component';
 import { AdminComponent } from './features/admin/admin.component';
 import { authGuard } from './core/auth/auth.guard';
 import { docenteGuard } from './core/auth/docente.guard';
+import { estudianteGuard } from './core/auth/estudiante.guard';
+import { adminGuard } from './core/auth/admin.guard';
 import { DocenteMatriculacionesComponent } from './features/docentes/matriculaciones/docente-matriculaciones.component';
 import { DocenteFaltasComponent } from './features/docentes/faltas/docente-faltas.component';
 import { DocenteComponent } from './features/docentes/docente.component';
 import { EstudianteComponent } from './features/estudiante/estudiante.component';
 import { EstudianteFaltasComponent } from './features/estudiante/faltas/estudiante-faltas.component';
 import { EstudianteNotasComponent } from './features/estudiante/notas/estudiante-notas.component';
+import { WildcardRedirectComponent } from './core/auth/wildcard-redirect.component';
 
 export const routes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' },
   { path: 'login', component: LoginComponent },
   { path: 'protected', component: ProtectedComponent, canActivate: [authGuard] },
-  { path: 'admin', component: AdminComponent, canActivate: [authGuard] },
+  { path: 'admin', component: AdminComponent, canActivate: [authGuard, adminGuard] },
   {
     path: 'docentes',
     component: DocenteComponent,
@@ -36,7 +39,7 @@ export const routes: Routes = [
   {
     path: 'estudiante',
     component: EstudianteComponent,
-    canActivate: [authGuard],
+    canActivate: [authGuard, estudianteGuard],
     children: [
       { path: '', redirectTo: 'matriculaciones', pathMatch: 'full' },
       {
@@ -51,3 +54,7 @@ export const routes: Routes = [
     ],
   },
 ];
+
+// catch-all route: redirect users to their primary area
+// Append the fallback route to the routes exported by this module so the router picks it up.
+routes.push({ path: '**', component: WildcardRedirectComponent });
