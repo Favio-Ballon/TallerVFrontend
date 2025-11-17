@@ -32,19 +32,26 @@
     </table>
   </div>
 
-  <div *ngIf="selectedNotas" class="mt-6 bg-gray-50 p-4 rounded">
-    <div class="flex items-center justify-between mb-2">
-      <h3 class="font-semibold">Detalle de notas (Matriculación {{ selectedNotas.id }})</h3>
-      <button (click)="closeNotas()" class="text-sm text-gray-600">Cerrar</button>
+  <!-- Modal overlay for selected notas -->
+  <div *ngIf="selectedNotas" class="modal-backdrop fixed inset-0 z-40 flex items-center justify-center" (click)="closeNotas()">
+    <div class="modal-panel bg-white rounded-2xl shadow-lg p-4 w-[92%] max-w-lg mx-4" (click)="$event.stopPropagation()">
+      <div class="flex items-start justify-between mb-3">
+        <h3 class="font-semibold">Detalle de notas</h3>
+        <div class="ml-2 text-sm text-gray-600">Matriculación #{{ selectedNotas.id }}</div>
+        <button (click)="closeNotas()" class="ml-auto text-sm text-gray-600">✕</button>
+      </div>
+
+      <div class="max-h-72 overflow-auto">
+        <ul class="space-y-2">
+          <li *ngFor="let n of selectedNotas.notas" class="flex justify-between bg-gray-50 p-3 rounded-lg items-center">
+            <div class="text-left">
+              <div class="font-medium">{{ n.evaluacion }}</div>
+              <div class="text-xs text-gray-500">Peso: {{ n.ponderacion }}%</div>
+            </div>
+            <div class="text-lg font-semibold">{{ n.calificacion }}</div>
+          </li>
+        </ul>
+      </div>
     </div>
-    <ul class="space-y-2">
-      <li *ngFor="let n of selectedNotas.notas" class="flex justify-between bg-white p-2 rounded">
-        <div>
-          <div class="font-medium">{{ n.evaluacion }}</div>
-          <div class="text-xs text-gray-500">Peso: {{ n.ponderacion }}%</div>
-        </div>
-        <div class="text-lg font-semibold">{{ n.calificacion }}</div>
-      </li>
-    </ul>
   </div>
 </div>

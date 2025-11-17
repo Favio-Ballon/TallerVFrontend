@@ -44,6 +44,9 @@ export class DocenteNotasComponent implements OnInit {
   // per-row state
   notaToUpload: { [id: number]: number } = {};
   uploadingNota: { [id: number]: boolean } = {};
+  // consolidation state
+  consolidatingRow: { [matriculacionId: number]: boolean } = {};
+  consolidatingAll = false;
 
   constructor(private docente: DocenteService, private toast: ToastService) {}
 
@@ -173,6 +176,55 @@ export class DocenteNotasComponent implements OnInit {
         const text = e?.error?.text || 'Error al subir calificación';
         this.toast.error(text);
         this.uploadingNota[notaId] = false;
+      },
+    });
+  }
+
+  /** Consolidar una matriculación usando su id (llama a DocenteService.consolidarMatriculacion) */
+  consolidarMatriculacion(matriculacionId: number) {
+    if (!matriculacionId) return;
+    const ok = confirm('¿Consolidar esta matriculación? Esta operación es irreversible.');
+    if (!ok) return;
+    this.consolidatingRow[matriculacionId] = true;
+    this.toast.show('Consolidando matriculación...', 'info');
+    this.docente.consolidarMatriculacion(matriculacionId).subscribe({
+      next: (res) => {
+        this.toast.success(res);
+        // refresh current view
+        if (this.selectedMatriculacionId) this.loadNotas(this.selectedMatriculacionId);
+        if (this.selectedCourseId) this.loadNotasForCourse(this.selectedCourseId);
+        this.consolidatingRow[matriculacionId] = false;
+      },
+      error: (e) => {
+        console.error('Error consolidando matriculación', e);
+        const text = e?.error?.text || 'Error al consolidar matriculación';
+        this.toast.error(text);
+        this.consolidatingRow[matriculacionId] = false;
+      },
+    });
+  }
+
+  /** Consolidar todas las matriculaciones del curso seleccionado (semestreMateriaId) */
+  consolidarTodos(semestreMateriaId: number | null) {
+    if (!semestreMateriaId) return;
+    const ok = confirm(
+      '¿Consolidar todas las matriculaciones de este curso? Esta operación es irreversible.'
+    );
+    if (!ok) return;
+    this.consolidatingAll = true;
+    this.toast.show('Consolidando todas las matriculaciones...', 'info');
+    this.docente.consolidarTodosPorSemestreMateria(semestreMateriaId).subscribe({
+      next: (res) => {
+        this.toast.success(res);
+        // refresh course view
+        if (this.selectedCourseId) this.loadNotasForCourse(this.selectedCourseId);
+        this.consolidatingAll = false;
+      },
+      error: (e) => {
+        console.error('Error consolidando todas las matriculaciones', e);
+        const text = e?.error?.text || 'Error al consolidar matriculaciones';
+        this.toast.error(text);
+        this.consolidatingAll = false;
       },
     });
   }

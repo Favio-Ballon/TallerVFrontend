@@ -2,24 +2,27 @@
   <h2 class="text-lg font-semibold mb-4">Matriculaciones (Inscribir alumnos)</h2>
 
   <form (ngSubmit)="submit()" [formGroup]="form" class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
-    <div>
+    <div class="relative" #alumnoWrapper>
       <label class="block text-sm font-medium mb-1">Alumno</label>
-      <select formControlName="alumnoId" class="w-full px-3 py-2 rounded-md border">
-        <option value="">-- seleccionar --</option>
-        <option *ngFor="let a of alumnos" [value]="a.id">{{ a.nombre }} {{ a.apellido }}</option>
-      </select>
+      <!-- Searchable input for alumnos -->
+      <input type="text" class="w-full px-3 py-2 rounded-md border" placeholder="Buscar alumno por nombre..." [(ngModel)]="alumnoQuery" [ngModelOptions]="{standalone:true}" (input)="filterAlumnos()" (keydown)="onAlumnoKeydown($event)" aria-autocomplete="list" aria-expanded="true" />
+      <!-- show a small dropdown with matches -->
+      <ul *ngIf="filteredAlumnos && filteredAlumnos.length > 0" class="absolute z-10 bg-white border rounded mt-1 w-full max-h-48 overflow-auto">
+        <li *ngFor="let a of filteredAlumnos; let i = index" (mousedown)="selectAlumno(a)" class="px-3 py-2 hover:bg-gray-100 cursor-pointer" [class.bg-gray-200]="selectedAlumnoIndex === i" tabindex="0">{{ a.nombre }} {{ a.apellido }}</li>
+      </ul>
+      <!-- Hidden form control value kept in reactive form -->
+      <input type="hidden" formControlName="alumnoId" />
     </div>
-
     <div>
       <label class="block text-sm font-medium mb-1">Semestre - Materia</label>
-      <select formControlName="semestreMateriaId" class="w-full px-3 py-2 rounded-md border">
+      <select formControlName="semestreMateriaId" class="w-full px-3 py-2 rounded-md border" [disabled]="loading">
         <option value="">-- seleccionar --</option>
         <option *ngFor="let s of semestreMaterias" [value]="s.id">{{ s.materia.nombre }} — {{ s.semestre.nombre }} ({{ s.docente.nombre }} {{ s.docente.apellido }})</option>
       </select>
     </div>
 
     <div class="flex items-end">
-      <button type="submit" [disabled]="loading" class="ml-auto bg-blue-600 text-white px-4 py-2 rounded-lg font-semibold">
+      <button type="submit" [disabled]="loading || form.invalid" class="ml-auto bg-blue-600 text-white px-4 py-2 rounded-lg font-semibold">
         {{ loading ? 'Guardando...' : 'Matricular' }}
       </button>
     </div>
@@ -35,6 +38,9 @@
           <option value="">-- seleccionar curso --</option>
           <option *ngFor="let s of semestreMaterias" [value]="s.id">{{ s.materia.nombre }} — {{ s.semestre.nombre }} ({{ s.docente.nombre }} {{ s.docente.apellido }})</option>
         </select>
+      </div>
+      <div class="flex items-end md:justify-end">
+        <!-- Consolidar acciones movidas a Notas del docente -->
       </div>
     </div>
 
@@ -58,7 +64,8 @@
               <td>{{ e.notaFinal }}</td>
               <td>
                 <div class="flex gap-2">
-                  <button class="bg-red-500 text-white px-2 py-1 rounded" (click)="remove(e.id)">Eliminar</button>
+                    <button class="bg-red-500 text-white px-2 py-1 rounded" (click)="remove(e.id)">Eliminar</button>
+                    <!-- Consolidar action moved to Docente Notas view -->
                 </div>
               </td>
             </tr>

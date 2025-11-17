@@ -18,7 +18,9 @@ export const routes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' },
   { path: 'login', component: LoginComponent },
   { path: 'protected', component: ProtectedComponent, canActivate: [authGuard] },
-  { path: 'admin', component: AdminComponent, canActivate: [authGuard, adminGuard] },
+  // default admin path -> usuarios and support deep links like /admin/usuarios
+  { path: 'admin', redirectTo: 'admin/usuarios', pathMatch: 'full' },
+  { path: 'admin/:tab', component: AdminComponent, canActivate: [authGuard, adminGuard] },
   {
     path: 'docentes',
     component: DocenteComponent,

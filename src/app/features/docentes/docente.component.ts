@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule, Router } from '@angular/router';
 import { AuthService } from '../../core/auth/auth.service';
@@ -10,10 +10,20 @@ import { AuthService } from '../../core/auth/auth.service';
   templateUrl: './docente.component.html',
   styleUrls: ['./docente.component.css'],
 })
-export class DocenteComponent {
+export class DocenteComponent implements OnInit {
   isNavOpen = false;
+  userName: string | null = null;
 
   constructor(private auth: AuthService, private router: Router) {}
+
+  ngOnInit(): void {
+    this.auth
+      .me()
+      .subscribe({
+        next: (p) => (this.userName = p?.name || null),
+        error: () => (this.userName = null),
+      });
+  }
 
   logout() {
     this.auth.logout();

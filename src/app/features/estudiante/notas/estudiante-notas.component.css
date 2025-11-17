@@ -14,4 +14,37 @@
   .overflow-auto td:nth-of-type(3)::before { content: 'DOCENTE'; }
   .overflow-auto td:nth-of-type(4)::before { content: 'N. FINAL'; }
   .overflow-auto td:nth-of-type(5)::before { content: 'Acciones'; }
+
+  /* Center card content on small screens */
+  .overflow-auto tbody tr { display:flex; flex-direction:column; align-items:center; text-align:center; }
+  .overflow-auto td { width:100%; }
+  .overflow-auto td::before { text-align:center; }
+  .overflow-auto td:nth-of-type(4), .overflow-auto td:nth-of-type(5) { display:block; }
+
+  /* Selected notas: stack and center */
+  .selected-notas ul li { flex-direction: column; align-items: center; text-align: center; gap: 0.25rem; }
+  .selected-notas ul li div { width: 100%; }
 }
+
+@media (max-width: 1024px) {
+  /* Center the table inside the container on tablet and smaller screens */
+  .overflow-auto { display: flex; justify-content: center; }
+  .overflow-auto table { width: auto; min-width: 480px; }
+}
+
+/* Small vertical spacing and line-height tweaks to avoid cramped text */
+.overflow-auto td { line-height: 1.18; }
+
+@media (max-width: 640px) {
+  /* add 1px gap between stacked cells (rows -> td items) */
+  .overflow-auto tbody tr { gap: 1px; }
+  /* ensure each cell keeps comfortable padding */
+  .overflow-auto td { padding: 0.5rem 0; }
+}
+
+/* Modal overlay styles for selected notas */
+.modal-backdrop { background: rgba(0,0,0,0.45); }
+.modal-panel { transform: translateY(0); }
+.modal-panel .font-medium { line-height: 1.2; }
+.modal-panel ul li { gap: 4px; }
+.modal-panel .max-h-72 { max-height: 18rem; }

@@ -18,8 +18,6 @@ import { AdminService, Materia, Semestre, Docente } from '../../../core/services
 })
 export class AdminMateriasComponent implements OnInit {
   materias: Materia[] = [];
-  semestres: Semestre[] = [];
-  docentes: Docente[] = [];
   materiaForm: FormGroup;
   loading = false;
   editingId: number | null = null;
@@ -27,10 +25,6 @@ export class AdminMateriasComponent implements OnInit {
   constructor(private adminService: AdminService, private fb: FormBuilder) {
     this.materiaForm = this.fb.group({
       nombre: ['', [Validators.required]],
-      cupos: [0, [Validators.required, Validators.min(0)]],
-      estado: ['Activa', [Validators.required]],
-      semestreId: ['', [Validators.required]],
-      docenteId: ['', [Validators.required]],
     });
   }
 
@@ -39,8 +33,6 @@ export class AdminMateriasComponent implements OnInit {
   }
 
   loadAll() {
-    this.loadSemestres();
-    this.loadDocentes();
     this.loadMaterias();
   }
 
@@ -52,39 +44,21 @@ export class AdminMateriasComponent implements OnInit {
   }
 
   loadSemestres() {
-    this.adminService.getSemestres().subscribe({
-      next: (s) => (this.semestres = s),
-      error: (e) => console.error('Error cargar semestres', e),
-    });
+    // no-op: semestres are not required for the simplified materia API
   }
 
   loadDocentes() {
-    // Reuse getUsuarios with filter rol=docente
-    this.adminService.getUsuarios({ rol: 'docente' }).subscribe({
-      next: (users) => {
-        // map to Docente minimal shape
-        this.docentes = users.map(
-          (u) => ({ id: u.id, nombre: u.nombre, apellido: u.apellido } as Docente)
-        );
-      },
-      error: (e) => console.error('Error cargar docentes', e),
-    });
+    // no-op: docentes are not required for the simplified materia API
   }
 
   edit(m: Materia) {
     this.editingId = m.id ?? null;
-    this.materiaForm.patchValue({
-      nombre: m.nombre,
-      cupos: m.cupos,
-      estado: m.estado,
-      semestreId: m.semestre ? m.semestre.id : m.semestreId,
-      docenteId: m.docente ? m.docente.id : m.docenteId,
-    });
+    this.materiaForm.patchValue({ nombre: m.nombre });
   }
 
   clear() {
     this.editingId = null;
-    this.materiaForm.reset({ estado: 'Activa' });
+    this.materiaForm.reset();
   }
 
   save() {
@@ -94,17 +68,7 @@ export class AdminMateriasComponent implements OnInit {
     }
     const payload = {
       nombre: this.materiaForm.value.nombre,
-      cupos: Number(this.materiaForm.value.cupos),
-      estado: this.materiaForm.value.estado,
-      semestreId: Number(this.materiaForm.value.semestreId),
-      docenteId: Number(this.materiaForm.value.docenteId),
     };
-
-    // Cupos positivos
-    if (isNaN(payload.cupos) || payload.cupos < 0) {
-      payload.cupos = Math.max(0, Number(payload.cupos) || 0);
-      this.materiaForm.controls['cupos'].setValue(payload.cupos);
-    }
 
     this.loading = true;
     if (this.editingId) {

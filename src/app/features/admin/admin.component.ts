@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router, ActivatedRoute } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import {
   FormsModule,
@@ -9,6 +10,7 @@ import {
 } from '@angular/forms';
 import { AuthService } from '../../core/auth/auth.service';
 import { AdminService, Usuario, Gestion, Semestre } from '../../core/services/admin.service';
+import { ToastService } from '../../shared/toast/toast.service';
 import { AdminUsuariosComponent } from './usuarios/admin-usuarios.component';
 import { AdminGestionesComponent } from './gestiones/admin-gestiones.component';
 import { AdminSemestresComponent } from './semestres/admin-semestres.component';
@@ -58,11 +60,15 @@ export class AdminComponent implements OnInit {
   loadingSemestres = false;
   // Mobile nav toggle
   isNavOpen = false;
-
+  userName: string | null = null;
+  // keep router injected to sync URL <-> activeTab
   constructor(
     private fb: FormBuilder,
     private adminService: AdminService,
-    private authService: AuthService
+    private authService: AuthService,
+    private router: Router,
+    private route: ActivatedRoute,
+    private toast: ToastService
   ) {
     this.usuarioForm = this.fb.group({
       nombre: ['', [Validators.required]],
@@ -74,7 +80,7 @@ export class AdminComponent implements OnInit {
     });
 
     this.gestionForm = this.fb.group({
-      ano: ['', [Validators.required, Validators.pattern(/^\d{4}$/)]],
+      ano: ['', [Validators.required, Validators.pattern(/^[0-9]{4}$/)]],
     });
 
     this.semestreForm = this.fb.group({
@@ -87,8 +93,52 @@ export class AdminComponent implements OnInit {
 
   ngOnInit() {
     this.loadGestiones();
-    // Cargar la lista de usuarios inicialmente (por defecto traer estudiantes)
-    this.loadUsuarios();
+    // sync active tab with URL
+    this.syncActiveTabFromUrl();
+    // listen for navigation changes
+    this.router.events.subscribe(() => this.syncActiveTabFromUrl());
+    // load user name for header
+    this.authService.me().subscribe({
+      next: (p) => (this.userName = p?.name || null),
+      error: () => (this.userName = null),
+    });
+  }
+
+  private syncActiveTabFromUrl() {
+    const url = this.router.url || '';
+    // expected /admin or /admin/<tab>
+    const parts = url.split('/').filter(Boolean);
+    const tab = parts[1] || 'usuarios';
+    this.setActiveTabFromRoute(tab);
+  }
+
+  private setActiveTabFromRoute(tab: string) {
+    switch (tab) {
+      case 'usuarios':
+        this.setActiveTab('usuarios');
+        break;
+      case 'gestiones':
+        this.setActiveTab('gestiones');
+        break;
+      case 'semestres':
+        this.setActiveTab('semestres');
+        break;
+      case 'modalidades':
+        this.setActiveTab('modalidades');
+        break;
+      case 'materias':
+        this.setActiveTab('materias');
+        break;
+      case 'evaluaciones':
+        this.setActiveTab('evaluaciones');
+        break;
+      case 'semestreMaterias':
+        this.setActiveTab('semestreMaterias');
+        break;
+      default:
+        this.setActiveTab('usuarios');
+        break;
+    }
   }
   setActiveTab(
     tab:
@@ -128,7 +178,8 @@ export class AdminComponent implements OnInit {
       | 'evaluaciones'
       | 'semestreMaterias'
   ) {
-    this.setActiveTab(tab);
+    // navigate so URL reflects the selected admin page
+    this.router.navigate(['/admin', tab]);
     // close mobile nav after selecting
     this.isNavOpen = false;
   }
@@ -164,14 +215,14 @@ export class AdminComponent implements OnInit {
           console.log('Usuario creado:', response);
           this.usuarioForm.reset();
           this.usuarioForm.patchValue({ rol: 'estudiante' });
-          alert('Usuario creado exitosamente');
+          this.toast.success('Usuario creado exitosamente');
           // recargar la lista de usuarios después de crear uno
           this.loadUsuarios();
           this.loadingUsuarios = false;
         },
         error: (error: any) => {
           console.error('Error al crear usuario:', error);
-          alert('Error al crear usuario: ' + (error.error?.message || error.message));
+          this.toast.error('Error al crear usuario: ' + (error.error?.message || error.message));
           this.loadingUsuarios = false;
         },
       });
@@ -211,13 +262,13 @@ export class AdminComponent implements OnInit {
         next: (response: any) => {
           console.log('Gestión creada:', response);
           this.gestionForm.reset();
-          alert('Gestión creada exitosamente');
+          this.toast.success('Gestión creada exitosamente');
           this.loadGestiones();
           this.loadingGestiones = false;
         },
         error: (error: any) => {
           console.error('Error al crear gestión:', error);
-          alert('Error al crear gestión: ' + (error.error?.message || error.message));
+          this.toast.error('Error al crear gestión: ' + (error.error?.message || error.message));
           this.loadingGestiones = false;
         },
       });
@@ -247,13 +298,13 @@ export class AdminComponent implements OnInit {
         next: (response: any) => {
           console.log('Semestre creado:', response);
           this.semestreForm.reset();
-          alert('Semestre creado exitosamente');
+          this.toast.success('Semestre creado exitosamente');
           this.loadSemestres();
           this.loadingSemestres = false;
         },
         error: (error: any) => {
           console.error('Error al crear semestre:', error);
-          alert('Error al crear semestre: ' + (error.error?.message || error.message));
+          this.toast.error('Error al crear semestre: ' + (error.error?.message || error.message));
           this.loadingSemestres = false;
         },
       });

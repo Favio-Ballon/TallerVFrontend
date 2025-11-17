@@ -52,12 +52,7 @@ export class DocenteService {
     );
   }
 
-  // Semestre-Materia (needed by docentes UI)
-  /**
-   * Obtener las semestre-materias asociadas al docente (endpoint específico del backend).
-   * El backend expone `/semestre-materia/docente/materias` que devuelve las asignaciones
-   * (incluye la propiedad `estaActivo` y los objetos anidados materia/semestre/docente).
-   */
+  // Semestre-Materia
   getSemestreMaterias(): Observable<SemestreMateria[]> {
     return this.http.get<SemestreMateria[]>(`${this.apiBase}/semestre-materia/docente/materias`);
   }
@@ -76,6 +71,28 @@ export class DocenteService {
     // to avoid HttpClient JSON parsing errors.
     const url = `${this.apiBase}/matriculacion/subir-faltas/${matriculacionId}`;
     return this.http.patch<string>(url, { nuevoValor }, { responseType: 'text' as 'json' });
+  }
+
+  /** Consolidar matriculaciones para un alumno (backend: POST /matriculacion/consolidar-alumno/{alumnoId})
+   *  Devuelve texto con el resultado.
+   */
+  consolidarAlumno(alumnoId: number): Observable<string> {
+    const url = `${this.apiBase}/matriculacion/consolidar-alumno/${alumnoId}`;
+    return this.http.post<string>(url, {}, { responseType: 'text' as 'json' });
+  }
+
+  /** Consolidar una matriculación usando su id (PATCH). Usa PATCH según contrato del backend. */
+  consolidarMatriculacion(matriculacionId: number): Observable<string> {
+    const url = `${this.apiBase}/matriculacion/consolidar-alumno/${matriculacionId}`;
+    return this.http.patch<string>(url, {}, { responseType: 'text' as 'json' });
+  }
+
+  /** Consolidar todas las matriculaciones asociadas a un semestre-materia (PATCH).
+   * Endpoint: PATCH /matriculacion/consolidar-todos/{semestreMateriaId}
+   */
+  consolidarTodosPorSemestreMateria(semestreMateriaId: number): Observable<string> {
+    const url = `${this.apiBase}/matriculacion/consolidar-todos/${semestreMateriaId}`;
+    return this.http.patch<string>(url, {}, { responseType: 'text' as 'json' });
   }
 
   /** Obtener notas por matriculacion */
