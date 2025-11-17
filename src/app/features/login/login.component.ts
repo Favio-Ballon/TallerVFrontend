@@ -74,9 +74,6 @@ export class LoginComponent {
         } catch (e) {
           // ignore parsing errors and fallback
         }
-
-        // fallback
-        this.router.navigate(['/protected']);
       },
       error: (err) => {
         this.loading = false;

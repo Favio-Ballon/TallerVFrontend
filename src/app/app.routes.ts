@@ -1,6 +1,5 @@
 import { Routes } from '@angular/router';
 import { LoginComponent } from './features/login/login.component';
-import { ProtectedComponent } from './features/protected/protected.component';
 import { AdminComponent } from './features/admin/admin.component';
 import { authGuard } from './core/auth/auth.guard';
 import { docenteGuard } from './core/auth/docente.guard';
@@ -17,7 +16,6 @@ import { WildcardRedirectComponent } from './core/auth/wildcard-redirect.compone
 export const routes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' },
   { path: 'login', component: LoginComponent },
-  { path: 'protected', component: ProtectedComponent, canActivate: [authGuard] },
   // default admin path -> usuarios and support deep links like /admin/usuarios
   { path: 'admin', redirectTo: 'admin/usuarios', pathMatch: 'full' },
   { path: 'admin/:tab', component: AdminComponent, canActivate: [authGuard, adminGuard] },
