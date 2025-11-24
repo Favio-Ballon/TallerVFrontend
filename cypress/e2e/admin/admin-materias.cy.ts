@@ -1,3 +1,11 @@
+/// <reference types="cypress" />
+
+// Spec: Admin - CRUD Materias
+// Pruebas básicas: listar, crear, editar y eliminar materias.
+// Notas:
+// - Registramos los `cy.intercept` antes de `cy.visit` para capturar llamadas de bootstrap.
+// - Usamos `cy.stubAuthAndGestion` para stubs de auth comunes.
+
 /**
  * E2E - Admin Materias (CRUD)
  *
