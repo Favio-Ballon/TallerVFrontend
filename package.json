@@ -6,7 +6,15 @@
     "start": "ng serve",
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
-    "test": "ng test"
+    "test": "ng test",
+    "test:unit": "ng test --watch=false",
+    "test:unit:watch": "ng test",
+    "test:e2e": "cypress run",
+    "test:e2e:open": "cypress open",
+    "test:e2e:component": "cypress run --component --spec \"cypress/component/**/*.spec.ts\"",
+    "cy:open": "cypress open",
+    "cy:run": "cypress run",
+    "cy:component": "cypress open --component"
   },
   "prettier": {
     "printWidth": 100,
@@ -34,18 +42,18 @@
     "zone.js": "~0.15.0"
   },
   "devDependencies": {
-    "@angular/build": "^20.3.4",
-    "@angular/cli": "^20.3.4",
-    "@angular/compiler-cli": "^20.3.0",
-    "@tailwindcss/postcss": "^4.1.14",
-    "@types/jasmine": "~5.1.0",
-    "jasmine-core": "~5.9.0",
-    "karma": "~6.4.0",
-    "karma-chrome-launcher": "~3.2.0",
-    "karma-coverage": "~2.2.0",
-    "karma-jasmine": "~5.1.0",
-    "karma-jasmine-html-reporter": "~2.1.0",
+    "@angular/build": "^20.3.11",
+    "@angular/compiler-cli": "^20.3.13",
+    "@tailwindcss/postcss": "^4.1.17",
+    "cypress": "^15.7.0",
+    "start-server-and-test": "^1.15.4",
     "typescript": "~5.9.2"
+  },
+  "overrides": {
+    "webpack-dev-server": "4.15.2",
+    "@angular-devkit/build-webpack": {
+      "webpack-dev-server": "4.15.2"
+    }
   },
   "packageManager": "yarn@1.22.22+sha512.a6b2f7906b721bba3d67d4aff083df04dad64c399707841b7acf00f6b133b7ac24255f2652fa22ae3534329dc6180534e98d17432037ff6fd140556e2bb3137e"
 }
