@@ -126,3 +126,40 @@ Angular CLI does not come with an end-to-end testing framework by default. You c
 ## Additional Resources
 
 For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+
+## Cypress (Component & E2E)
+
+This project includes a Cypress configuration to run Component Tests (unit-like tests for Angular components) and E2E tests.
+
+Prerequisites:
+
+- Install dependencies (from project root) in `cmd.exe`:
+
+```cmd
+npm install
+```
+
+Open Cypress (visual runner):
+
+```cmd
+npm run cy:open
+```
+
+Run Cypress tests headlessly:
+
+```cmd
+npm run cy:run
+```
+
+Open Cypress directly in Component mode:
+
+```cmd
+npm run cy:component
+```
+
+Notes:
+
+- Component tests are under `cypress/component/` and are organized one test file per component.
+- If you add more components, create a new `*.spec.ts` file in `cypress/component/` to keep tests separated and easy to review.
+- If you find dependency injection errors during mounting, provide simple stubs or mocks via the `providers` option in the test (examples are included).
+
