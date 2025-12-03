@@ -1,5 +1,12 @@
+/**
+ * Pruebas unitarias para `ToastService`.
+ * Explicación:
+ * - `ToastService` mantiene un `BehaviorSubject` con la lista de toasts (`toasts$`).
+ * - Aquí comprobamos que `show`, `remove` y `clear` modifican correctamente el stream.
+ * - Se usan suscripciones en las pruebas para observar el estado emitido.
+ */
 import { TestBed } from '@angular/core/testing';
-import { ToastService } from './toast.service';
+import { ToastService } from '../../../../app/shared/toast/toast.service';
 
 describe('ToastService', () => {
   let service: ToastService;

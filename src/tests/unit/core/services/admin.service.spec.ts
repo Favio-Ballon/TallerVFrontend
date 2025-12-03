@@ -1,6 +1,13 @@
+/**
+ * Pruebas unitarias para `AdminService`.
+ * Explicación:
+ * - Se usa `HttpClientTestingModule` para interceptar peticiones HTTP y verificar URLs/métodos.
+ * - `AdminService` se instancia directamente con el `HttpClient` inyectado por TestBed.
+ */
 import { TestBed } from '@angular/core/testing';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
-import { AdminService, Materia } from './admin.service';
+import { HttpClient } from '@angular/common/http';
+import { AdminService, Materia } from '../../../../app/core/services/admin.service';
 
 describe('AdminService', () => {
   let service: AdminService;
@@ -9,9 +16,9 @@ describe('AdminService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],
-      providers: [AdminService],
     });
-    service = TestBed.inject(AdminService);
+    const http = TestBed.inject(HttpClient);
+    service = new AdminService(http as any);
     httpMock = TestBed.inject(HttpTestingController);
   });
 
@@ -29,6 +36,7 @@ describe('AdminService', () => {
       } as Materia,
     ];
 
+    // Se suscribe al observable para comprobar que devuelve la lista esperada
     service.getMaterias().subscribe((res) => {
       expect(res).toEqual(mock);
     });

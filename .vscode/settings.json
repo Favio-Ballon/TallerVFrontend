@@ -1,4 +1,11 @@
 {
+  // Evita que la extensión de Jest ejecute tests automáticamente al iniciar
+  "jest.autoRun": "off",
+  // Si quieres que la extensión use exactamente tu script npm (incluye flags de NODE_OPTIONS),
+  // descomenta la siguiente línea y cambia "off" arriba por "onSave" o el comportamiento que prefieras.
+  // "jest.jestCommandLine": "npm run test:jest --silent"
+}
+{
     "workbench.colorCustomizations": {
         "activityBar.background": "#3E2732",
         "titleBar.activeBackground": "#573646",
