@@ -8,7 +8,6 @@ import {
   Validators,
 } from '@angular/forms';
 import { AdminService, Materia, Semestre, Docente } from '../../../core/services/admin.service';
-import { ToastService } from '../../../shared/toast/toast.service';
 
 @Component({
   selector: 'app-admin-materias',
@@ -23,7 +22,7 @@ export class AdminMateriasComponent implements OnInit {
   loading = false;
   editingId: number | null = null;
 
-  constructor(private adminService: AdminService, private fb: FormBuilder, private toast: ToastService) {
+  constructor(private adminService: AdminService, private fb: FormBuilder) {
     this.materiaForm = this.fb.group({
       nombre: ['', [Validators.required]],
     });
@@ -76,30 +75,24 @@ export class AdminMateriasComponent implements OnInit {
       this.adminService.updateMateria(this.editingId, payload).subscribe({
         next: () => {
           this.loading = false;
-          this.toast.show('Materia actualizada', 'success');
           this.loadMaterias();
           this.clear();
         },
         error: (e) => {
-          this.loading = false;
-          const msg = e?.error?.message || 'Error al actualizar materia';
-          this.toast.show(msg, 'error');
           console.error(e);
+          this.loading = false;
         },
       });
     } else {
       this.adminService.createMateria(payload).subscribe({
         next: () => {
           this.loading = false;
-          this.toast.show('Materia creada', 'success');
           this.loadMaterias();
           this.clear();
         },
         error: (e) => {
-          this.loading = false;
-          const msg = e?.error?.message || 'Error al crear materia';
-          this.toast.show(msg, 'error');
           console.error(e);
+          this.loading = false;
         },
       });
     }

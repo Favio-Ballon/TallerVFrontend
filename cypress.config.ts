@@ -6,11 +6,12 @@ export default defineConfig({
       framework: 'angular',
       bundler: 'webpack',
     },
+    specPattern: 'cypress/component/**/*.spec.ts',
     supportFile: 'cypress/support/component.ts',
   },
   e2e: {
-    baseUrl: 'http://localhost:4200',
+    specPattern: 'cypress/e2e/**/*.cy.ts',
     supportFile: 'cypress/support/e2e.ts',
-    specPattern: ['cypress/e2e/**/*.cy.ts', 'cypress/unit/**/*.spec.ts'],
+    baseUrl: 'http://localhost:4200',
   },
 });

@@ -35,6 +35,7 @@ export interface Semestre {
   gestionId: number;
   fechaInicio: string;
   fechaFin: string;
+  gestion?: Gestion;
 }
 
 export interface Docente {
@@ -189,11 +190,6 @@ export class AdminService {
   deleteSemestreMateria(id: number): Observable<any> {
     return this.http.delete(`${this.apiBase}/semestre-materia/${id}`);
   }
-  /**
-   * Cierra (desactiva) una asignación semestre-materia.
-   * El backend responde con texto plano (p.ej. "La materia ha sido cerrada exitosamente.").
-   * Por eso solicitamos responseType: 'text' para evitar que HttpClient intente parsear JSON.
-   */
   cerrarSemestreMateria(id: number): Observable<string> {
     // Angular typing quirk: request text but HttpClient overloads are strict; cast the result to Observable<string>
     return this.http.patch(
@@ -203,5 +199,4 @@ export class AdminService {
     ) as Observable<string>;
   }
 
-  // Matriculacion (inscribir alumnos)
 }
