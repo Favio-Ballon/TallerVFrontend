@@ -164,25 +164,6 @@ export class DocenteNotasComponent implements OnInit {
       next: (res) => {
         // res es texto devuelto por backend
         this.toast.success(res);
-        // After uploading a grade, trigger recalculation for the related matriculacion
-        // Determine matriculacionId: prefer selectedMatriculacionId, otherwise find it in notaRows
-        let matriculacionIdToCalc: number | null = this.selectedMatriculacionId;
-        if (!matriculacionIdToCalc) {
-          const row = this.notaRows.find((r) => r.notaId === notaId);
-          if (row) matriculacionIdToCalc = row.matriculacionId;
-        }
-        if (matriculacionIdToCalc) {
-          this.docente.calcularNota(matriculacionIdToCalc).subscribe({
-            next: (txt) => {
-              // backend returns a text message
-              this.toast.success(txt);
-            },
-            error: (err) => {
-              console.error('Error calculando nota', err);
-              this.toast.error('Error al calcular nota');
-            },
-          });
-        }
         // refresh depending on current view: if we are viewing a single matriculacion, refresh it,
         // otherwise if viewing a course, refresh the whole course notes
         if (this.selectedMatriculacionId) this.loadNotas(this.selectedMatriculacionId);

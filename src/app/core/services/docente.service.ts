@@ -119,13 +119,4 @@ export class DocenteService {
     const url = `${this.apiBase}/nota/${notaId}/subir-calificacion`;
     return this.http.patch<string>(url, { nuevoValor }, { responseType: 'text' as 'json' });
   }
-
-  /** Calcular nota final para una matriculación (PATCH)
-   * Endpoint: PATCH /matriculacion/calcular-nota/{matriculacionId}
-   * Devuelve texto con el resultado.
-   */
-  calcularNota(matriculacionId: number): Observable<string> {
-    const url = `${this.apiBase}/matriculacion/calcular-nota/${matriculacionId}`;
-    return this.http.patch<string>(url, {}, { responseType: 'text' as 'json' });
-  }
 }
